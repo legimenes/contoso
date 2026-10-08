@@ -1,0 +1,1 @@
+# docker compose -p "contoso-pay" -f C:/workspace/repos/labs/contoso/contoso-pay/backend/docker-compose.yml up -d
