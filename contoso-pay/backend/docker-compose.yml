@@ -20,9 +20,25 @@ services:
     networks:
       - contosopay_network
 
+  mongodb:
+    image: mongo:8
+    container_name: contosopay_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass@word
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./scripts/mongodb:/docker-entrypoint-initdb.d:ro
+      - contosopay_mongodb_data:/data/db
+    networks:
+      - contosopay_network
+
 volumes:
   contosopay_postgres_data:
     name: contosopay_postgres_data
+  contosopay_mongodb_data:
+    name: contosopay_mongodb_data
 
 networks:
   contosopay_network:
