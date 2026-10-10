@@ -25,7 +25,7 @@ services:
     container_name: contosopay_mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: pass@word
+      MONGO_INITDB_ROOT_PASSWORD: pass@word1
     ports:
       - "27017:27017"
     volumes:

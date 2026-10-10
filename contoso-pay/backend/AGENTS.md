@@ -13,7 +13,7 @@ You are a Senior Software Engineer.
 ### Decision Tree: What to Read
 
 **IF** task involves understanding architecture:
-➜ READ `.specs/docs/architecture-overview.md` FIRST (navigation hub)
+➜ READ `.specs/docs/architecture-overview.md`
 
 **IF** task involves creating/modifying entities, use cases, services, repositories or endpoints:
 ➜ READ `.specs/docs/coding-pstterns.md`
