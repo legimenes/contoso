@@ -1,4 +1,4 @@
-﻿namespace Domain.Core.Results;
+namespace Domain.Core.Results;
 
 public class Error
 {
@@ -14,5 +14,5 @@ public class Error
     }
 
     public static Error New(string title, string? detail = null, string? code = null)
-        => new (title, detail, code);
+        => new(title, detail, code);
 }

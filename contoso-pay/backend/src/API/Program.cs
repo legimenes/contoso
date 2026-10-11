@@ -1,41 +1,42 @@
-var builder = WebApplication.CreateBuilder(args);
+using API.Extensions;
+using Domain.Core.Results;
+using Serilog;
+using Serilog.Debugging;
+using System.Reflection;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+SelfLog.Enable(Console.Error);
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
-    app.MapOpenApi();
+    builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(context.Configuration));
+    builder.Services.AddErrorHandling();
+    builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+    builder.Services.AddOpenApi();
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+WebApplication app = builder.Build();
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    app.UseGlobalization();
+    app.UseErrorHandling();
+    app.MapEndpoints();
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapOpenApi();
+    }
+    app.UseHttpsRedirection();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    app.Lifetime.ApplicationStarted.Register(() =>
+    {
+        Log.Information("Application started and server is ready.");
+    });
 
-app.Run();
+    app.MapGet("/test", () =>
+    {
+        int a = 1 / 1;
+        throw new InvalidOperationException("Erro de teste.");
+        //return Results.Ok(new { message = "OK" });
+        return EndpointBase.CreateResult(Result.Failure<bool>(Error.New("blabla"), ResultType.Undefined));
+    });
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    app.Run();
 }
