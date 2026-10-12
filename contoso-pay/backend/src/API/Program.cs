@@ -11,6 +11,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     builder.Services.AddErrorHandling();
     builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     builder.Services.AddVersioning();
+    builder.Services.AddHealthMonitoring();
 }
 
 WebApplication app = builder.Build();
@@ -20,6 +21,7 @@ WebApplication app = builder.Build();
     app.MapEndpoints();
     app.UseDocumentation();
     app.UseHttpsRedirection();
+    app.UseHealthMonitoring();
 
     app.Lifetime.ApplicationStarted.Register(() =>
     {
