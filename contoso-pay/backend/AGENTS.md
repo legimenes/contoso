@@ -13,10 +13,13 @@ You are a Senior Software Engineer.
 ### Decision Tree: What to Read
 
 **IF** task involves understanding architecture:
-➜ READ `.specs/docs/architecture-overview.md`
+➜ READ `backend/.specs/docs/architecture-overview.md`
 
 **IF** task involves creating/modifying entities, use cases, services, repositories or endpoints:
-➜ READ `.specs/docs/coding-pstterns.md`
+➜ READ `backend/.specs/docs/coding-patterns.md`
+
+**IF** task involves automate tests:
+➜ READ `backend/.specs/docs/automated-tests.md`
 
 ## HIGH PRIORITY
 

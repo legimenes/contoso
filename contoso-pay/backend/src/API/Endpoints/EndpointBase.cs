@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
+namespace API.Endpoints;
+
 internal abstract class EndpointBase
 {
     internal static IResult CreateResult<T>(Result<T> result)
@@ -9,6 +11,7 @@ internal abstract class EndpointBase
         return result.Type switch
         {
             ResultType.Ok => Results.Ok(result.Value),
+            ResultType.Created => Results.Created((string?)null, result.Value),
             ResultType.BadRequest => CreateProblemDetails(StatusCodes.Status400BadRequest, result.Errors),
             ResultType.NotFound => CreateProblemDetails(StatusCodes.Status404NotFound, result.Errors),
             ResultType.Conflict => CreateProblemDetails(StatusCodes.Status409Conflict, result.Errors),

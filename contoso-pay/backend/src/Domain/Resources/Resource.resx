@@ -120,4 +120,19 @@
   <data name="Exception_DefaultMessage" xml:space="preserve">
     <value>An unexpected error occurred.</value>
   </data>
+  <data name="Validation_Document_AlreadyExists" xml:space="preserve">
+    <value>Document already exists.</value>
+  </data>
+  <data name="Validation_Document_MaxLength" xml:space="preserve">
+    <value>Document must be at most {0} characters.</value>
+  </data>
+  <data name="Validation_Document_Required" xml:space="preserve">
+    <value>Document is required.</value>
+  </data>
+  <data name="Validation_Name_MaxLength" xml:space="preserve">
+    <value>Name must be at most {0} characters.</value>
+  </data>
+  <data name="Validation_Name_Required" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
 </root>

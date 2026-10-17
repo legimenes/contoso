@@ -68,5 +68,50 @@ namespace Domain.Resources {
                 return ResourceManager.GetString("Exception_DefaultMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document already exists..
+        /// </summary>
+        public static string Validation_Document_AlreadyExists {
+            get {
+                return ResourceManager.GetString("Validation_Document_AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document must be at most {0} characters..
+        /// </summary>
+        public static string Validation_Document_MaxLength {
+            get {
+                return ResourceManager.GetString("Validation_Document_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document is required..
+        /// </summary>
+        public static string Validation_Document_Required {
+            get {
+                return ResourceManager.GetString("Validation_Document_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name must be at most {0} characters..
+        /// </summary>
+        public static string Validation_Name_MaxLength {
+            get {
+                return ResourceManager.GetString("Validation_Name_MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required..
+        /// </summary>
+        public static string Validation_Name_Required {
+            get {
+                return ResourceManager.GetString("Validation_Name_Required", resourceCulture);
+            }
+        }
     }
 }

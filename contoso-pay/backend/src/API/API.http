@@ -1,6 +1,11 @@
 @API_HostAddress = http://localhost:5059
 
-GET {{API_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{API_HostAddress}}/v1/merchants
+Content-Type: application/json
+
+{
+  "name": "Loja Exemplo",
+  "document": "12345678000190"
+}
 
 ###

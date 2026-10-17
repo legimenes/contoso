@@ -8,3 +8,12 @@ CREATE SCHEMA contosopay;
 
 GRANT ALL PRIVILEGES ON DATABASE contoso TO appuser;
 GRANT ALL PRIVILEGES ON SCHEMA contosopay TO appuser;
+
+CREATE TABLE contosopay.merchants (
+    id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    document VARCHAR(14) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+GRANT ALL PRIVILEGES ON TABLE contosopay.merchants TO appuser;
