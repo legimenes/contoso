@@ -21,12 +21,13 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsSuccess);
         Assert.Equal(ResultType.Created, result.Type);
-        Assert.NotEqual(Guid.Empty, result.Value);
+        Assert.NotNull(result.Value);
+        Assert.NotEqual(Guid.Empty, result.Value.Id);
         await repository.Received(1).ExistsByDocumentAsync(Arg.Any<string>(), Arg.Any<CancellationToken>());
         await repository.Received(1).AddAsync(Arg.Any<Merchant>(), Arg.Any<CancellationToken>());
     }
@@ -41,7 +42,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);
@@ -60,7 +61,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);
@@ -81,7 +82,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);
@@ -102,7 +103,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);
@@ -122,7 +123,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);
@@ -144,7 +145,7 @@ public sealed class CreateMerchantTests
         CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
 
         // When
-        Result<Guid> result = await useCase.ExecuteAsync(request, CancellationToken.None);
+        Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
 
         // Then
         Assert.True(result.IsFailure);

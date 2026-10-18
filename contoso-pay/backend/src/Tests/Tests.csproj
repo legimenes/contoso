@@ -24,4 +24,9 @@
   <ItemGroup>
     <ProjectReference Include="..\API\API.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.Testing.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -77,7 +77,6 @@ Core
 *Features Coding Rules*:
 
 - Use the **`FluentValidation` NuGet package** to implement validators for all request objects. Do not use data annotations or custom validation logic.
-- If the **request** or **response** contains only a single property, there is no need to create a dedicated class or validator.
 
 ## Driven Ports
 

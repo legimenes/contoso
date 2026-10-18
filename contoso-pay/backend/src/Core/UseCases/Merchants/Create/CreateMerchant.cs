@@ -7,20 +7,22 @@ using FluentValidation.Results;
 
 namespace Core.UseCases.Merchants.Create;
 
-public sealed class CreateMerchant(IMerchantRepository repository, IValidator<CreateMerchantRequest> validator) : ICreateMerchant
+public sealed class CreateMerchant(
+    IMerchantRepository repository,
+    IValidator<CreateMerchantRequest> validator) : ICreateMerchant
 {
-    public async Task<Result<Guid>> ExecuteAsync(CreateMerchantRequest request, CancellationToken cancellationToken)
+    public async Task<Result<CreateMerchantResponse>> ExecuteAsync(CreateMerchantRequest request, CancellationToken cancellationToken)
     {
         ValidationResult validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
         {
-            return Result.Failure<Guid>(validationResult.ToDictionary(), ResultType.BadRequest);
+            return Result.Failure<CreateMerchantResponse>(validationResult.ToDictionary(), ResultType.BadRequest);
         }
 
         string document = request.Document.Trim();
         if (await repository.ExistsByDocumentAsync(document, cancellationToken).ConfigureAwait(false))
         {
-            return Result.Failure<Guid>(Error.New(Resource.Validation_Document_AlreadyExists), ResultType.Conflict);
+            return Result.Failure<CreateMerchantResponse>(Error.New(Resource.Validation_Document_AlreadyExists), ResultType.Conflict);
         }
 
         Merchant merchant = Merchant.New(
@@ -32,9 +34,9 @@ public sealed class CreateMerchant(IMerchantRepository repository, IValidator<Cr
         }
         catch (DuplicateMerchantDocumentException)
         {
-            return Result.Failure<Guid>(Error.New(Resource.Validation_Document_AlreadyExists), ResultType.Conflict);
+            return Result.Failure<CreateMerchantResponse>(Error.New(Resource.Validation_Document_AlreadyExists), ResultType.Conflict);
         }
 
-        return Result.Success<Guid>(merchant.Id, ResultType.Created);
+        return Result.Success<CreateMerchantResponse>(new CreateMerchantResponse(merchant.Id), ResultType.Created);
     }
 }

@@ -1,7 +1,4 @@
 using Core.UseCases.Merchants.Create;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using System.Net;
 using System.Net.Http.Json;
@@ -9,11 +6,11 @@ using System.Text.Json;
 
 namespace Tests.Core.Merchants.Create;
 
-public sealed class CreateMerchantEndpointTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory factory) : IClassFixture<TestingWebApplicationFactory>
 {
     private readonly HttpClient _client = factory.CreateClient();
 
-    private readonly string _connectionString = GetConnectionString(factory);
+    private readonly string _connectionString = TestingWebApplicationFactory.GetConnectionString(factory);
 
     [Fact]
     [Trait("Merchant", "CreateMerchant (Integration)")]
@@ -81,12 +78,6 @@ public sealed class CreateMerchantEndpointTests(WebApplicationFactory<Program> f
         {
             await DeleteByDocumentAsync(document);
         }
-    }
-
-    private static string GetConnectionString(WebApplicationFactory<Program> factory)
-    {
-        return factory.Services.GetRequiredService<IConfiguration>().GetConnectionString("Postgres")
-            ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
     }
 
     private static void AssertProblemEnvelope(JsonDocument body, int expectedStatus, string expectedType)
