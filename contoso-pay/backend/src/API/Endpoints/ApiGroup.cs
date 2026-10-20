@@ -6,9 +6,21 @@ internal static class ApiGroup
 {
     internal const string Prefix = "/v{version:apiVersion}";
 
-    internal static RouteGroupBuilder MapVersionedGroup(this IEndpointRouteBuilder app, int major, int minor = 0)
+    internal static readonly ApiVersion[] ApiVersions =
+    [
+        new(1, 0),
+        new(2, 0)
+    ];
+
+    internal static RouteGroupBuilder MapVersionedGroup(this IEndpointRouteBuilder app)
     {
-        ApiVersion version = new(major, minor);
-        return app.NewVersionedApi().MapGroup(Prefix).HasApiVersion(version);
+        RouteGroupBuilder group = app.NewVersionedApi().MapGroup(Prefix);
+
+        foreach (ApiVersion version in ApiVersions)
+        {
+            group.HasApiVersion(version);
+        }
+
+        return group;
     }
 }

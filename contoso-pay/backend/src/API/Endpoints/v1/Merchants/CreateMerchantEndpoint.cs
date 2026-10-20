@@ -8,9 +8,7 @@ internal sealed class CreateMerchantEndpoint : EndpointBase, IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        RouteGroupBuilder v1 = app.MapVersionedGroup(1);
-
-        v1.MapPost("/merchants", async (
+        app.MapPost("/merchants", async (
             CreateMerchantRequest request,
             ICreateMerchant useCase,
             CancellationToken cancellationToken) =>

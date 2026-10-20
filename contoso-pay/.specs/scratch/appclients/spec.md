@@ -37,15 +37,15 @@ Provide a minimal `AppClients` capability on the single versioned base: public `
 - Secrets: generate a strong random secret per client, show it in plain text only in the create response, persist only a salted hash. The read path never returns any secret material. Active defaults to true; deactivation has no endpoint in this slice.
 - Architecture: follow the repo's Clean + Ports and Adapters + Vertical Slice approach. The application layer exposes create and get capabilities with request/response plus validator; persistence contracts are ports with a relational adapter implementation; composition happens at the API composition root. No business rules in the HTTP layer.
 - Persistence: relational source of truth gains an `appclients` table with client id primary key, merchant id foreign key to merchants, name, secret hash, active flag, and creation timestamp. The single SQL objects definition is updated in place; no migration framework. No document store usage for credential data.
-- Seams for testing (same seam strategy accepted for merchants): the highest existing seam is the HTTP endpoint seam backed by the shared Result-to-response mapper; the second seam is the application use-case seam; the third is the repository port seam. One new port is introduced for app-client persistence plus reuse of the merchant-existence check. Endpoint seam is the primary verifiable seam.
+- Seams for testing (same seam strategy accepted for merchants): the primary testing seam is the HTTP endpoint seam backed by the shared Result-to-response mapper; the second seam is the application use-case seam for unit tests. The repository port is an implementation seam only — the round-trip against the real database is verified through endpoint tests, with no standalone repository tests. One new port is introduced for app-client persistence plus reuse of the merchant-existence check. Endpoint seam is the primary verifiable seam.
 - Documentation: the new endpoints join the existing versioned API documentation and appear in the Scalar reference grouped by version. No Swagger UI.
 - Forward dependency: the credentials created here are consumed by the connect slice (`client_credentials` grant). The read-protection of the get endpoint is wired when connect lands.
 
 ## Testing Decisions
 
 - A good test asserts externally observable behavior (status code plus response shape, one-time secret presence only on create, hash-not-plain in storage, and ownership scoping), not internal implementation details.
-- Modules under test: create/get validation including unknown-merchant handling, secret hashing and one-time exposure, active-default behavior, repository round-trip for the appclients table, and endpoint mapping from Result to HTTP status plus problem envelope.
-- Prior art in the codebase: only smoke coverage exists plus the shared Result and problem-envelope helpers, with the merchants slice establishing the first real unit plus integration pattern. This slice copies that pattern; the test project uses xUnit.
+- Modules under test: create/get validation including unknown-merchant handling, secret hashing and one-time exposure, and active-default behavior as unit tests; endpoint mapping from Result to HTTP status plus problem envelope — including the real-database round-trip for the appclients table — as integration tests. No standalone repository tests; the validation matrix lives in unit tests, with at most one invalidation integration test per endpoint.
+- Prior art in the codebase: the implemented merchants slice under `backend/.specs/docs/automated-tests.md` (xUnit, builders, NSubstitute, Given–When–Then naming, single parenthesized trait). This slice copies that pattern and follows those conventions.
 
 ## Out of Scope
 
@@ -58,4 +58,4 @@ Provide a minimal `AppClients` capability on the single versioned base: public `
 ## Further Notes
 
 - Build order remains merchants, then app clients, then connect. The get-protection and the token grant are specified here but become verifiable only with connect.
-- Triage vocabulary file was not found in the repo; `ready-for-agent` is applied per the skill instructions. Glossary and ADRs are intentionally skipped per explicit user direction.
+- Glossary and ADRs are intentionally skipped per explicit user direction. Test conventions are documented in `backend/.specs/docs/automated-tests.md`.

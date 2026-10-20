@@ -97,6 +97,15 @@ namespace Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merchant not found..
+        /// </summary>
+        public static string Validation_Merchant_NotFound {
+            get {
+                return ResourceManager.GetString("Validation_Merchant_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name must be at most {0} characters..
         /// </summary>
         public static string Validation_Name_MaxLength {

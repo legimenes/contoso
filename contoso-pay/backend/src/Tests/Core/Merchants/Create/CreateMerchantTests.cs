@@ -11,7 +11,7 @@ namespace Tests.Core.Merchants.Create;
 public sealed class CreateMerchantTests
 {
     [Fact]
-    [Trait("Merchant", "CreateMerchant")]
+    [Trait("Merchant", "CreateMerchant (Unit)")]
     public async Task GivenValidRequest_WhenHappyPath_ShouldCreateMerchant()
     {
         // Given

@@ -4,13 +4,13 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] `POST /v1/merchants` público com `{name, document}` válido retorna `201 {id}`
-- [ ] Nome ou documento ausente/vazio retorna `400` no envelope padrão de problema
-- [ ] Documento já cadastrado retorna `409` no envelope padrão de problema
-- [ ] Resposta de criação expõe somente o id, sem ecoar nome/documento
-- [ ] Endpoint aparece na referência Scalar versionada com exemplo executável
+- [x] `POST /v1/merchants` público com `{name, document}` válido retorna `201 {id}`
+- [x] Nome ou documento ausente/vazio retorna `400` no envelope padrão de problema
+- [x] Documento já cadastrado retorna `409` no envelope padrão de problema
+- [x] Resposta de criação expõe somente o id, sem ecoar nome/documento
+- [x] Endpoint aparece na referência Scalar versionada com exemplo executável
 
 ## Comments
 

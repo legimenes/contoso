@@ -42,7 +42,7 @@ Provide a single OAuth2-style `client_credentials` capability outside the versio
 
 - A good test asserts externally observable behavior (token issued for valid credentials, correct lifetime field, Bearer accepted downstream, invalid/expired/forged tokens rejected, no secret leakage in responses or logs), not signing internals or framework plumbing.
 - Modules under test: grant validation, credential lookup plus hash verification plus active check, token minting with expected claims and expiry, validation of good/expired/tampered tokens, endpoint mapping to HTTP status plus problem envelope, and the merchant-scoping values exposed to downstream handlers.
-- Prior art: smoke endpoints plus shared Result/problem helpers, with merchants and app clients establishing the unit plus integration pattern on xUnit. This slice copies that pattern and adds deterministic signing keys and controllable clocks in tests.
+- Prior art: the implemented merchants slice and the conventions codified in `backend/.specs/docs/automated-tests.md` (xUnit, builders, NSubstitute, Given–When–Then naming, single parenthesized trait). This slice copies that pattern and adds deterministic signing keys and controllable clocks in tests.
 
 ## Out of Scope
 
@@ -55,4 +55,4 @@ Provide a single OAuth2-style `client_credentials` capability outside the versio
 ## Further Notes
 
 - Build order remains merchants, then app clients, then connect. Landing connect makes the specified Bearer guards on the earlier get endpoints verifiable end-to-end and unblocks the sales slice.
-- Glossary and ADRs are intentionally skipped per explicit user direction. Triage vocabulary file was not found; `ready-for-agent` is applied per the skill instructions.
+- Glossary and ADRs are intentionally skipped per explicit user direction. Test conventions are documented in `backend/.specs/docs/automated-tests.md`.

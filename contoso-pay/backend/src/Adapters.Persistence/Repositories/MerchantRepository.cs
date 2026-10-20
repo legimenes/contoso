@@ -25,5 +25,10 @@ public sealed class MerchantRepository(ContosoPayDbContext dbContext) : IMerchan
     public Task<bool> ExistsByDocumentAsync(string document, CancellationToken cancellationToken)
     {
         return dbContext.Set<Merchant>().AnyAsync(merchant => merchant.Document == document, cancellationToken);
-    }        
+    }
+
+    public Task<Merchant?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return dbContext.Set<Merchant>().FirstOrDefaultAsync(merchant => merchant.Id == id, cancellationToken);
+    }
 }

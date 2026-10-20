@@ -35,15 +35,15 @@ Provide a minimal `Merchants` capability with two endpoints on the single versio
 - Validation: name and document are required, trimmed, non-empty with a sensible max length; document is unique system-wide. Duplicates map to conflict, validation failures to bad request, unknown id to not found, all via the existing Result pattern.
 - Architecture: follow the repo's Clean + Ports and Adapters + Vertical Slice approach. The use-case layer exposes create and get capabilities with request/response plus validator; the persistence contract is a port defined in the application layer with a relational adapter implementation; composition happens at the API composition root. No business rules in the HTTP layer.
 - Persistence: relational source of truth gains a `merchants` table with primary key id, name, document (unique), and creation timestamp. The single SQL objects definition is updated in place; no migration framework. No document store usage for merchant data in this slice.
-- Seams for testing (proposed and accepted): the highest existing seam is the HTTP endpoint seam backed by the shared Result-to-response mapper; the second seam is the application use-case seam; the third is the repository port seam. One new port is introduced for merchant persistence because no persistence seam exists yet. Fewer seams preferred; endpoint seam is the primary verifiable seam.
+- Seams (proposed and accepted): the primary testing seam is the HTTP endpoint seam backed by the shared Result-to-response mapper; the second seam is the application use-case seam for unit tests. The repository port is an implementation seam only — the round-trip against the real database is verified through endpoint tests, with no standalone repository tests. One new port is introduced for merchant persistence because no persistence seam exists yet. Fewer seams preferred; endpoint seam is the primary verifiable seam.
 - Documentation: the new endpoints join the existing versioned API documentation and appear in the Scalar reference grouped by version. No Swagger UI.
 - Idempotency: no dedicated idempotency key in this slice; document uniqueness is the only guard against duplicate merchants.
 
 ## Testing Decisions
 
 - A good test asserts externally observable behavior (status code plus response shape and persistence effect), not internal implementation details such as private methods or adapter internals.
-- Modules under test: the create/get use-case validation and conflict behavior, the repository round-trip for the merchants table, and the endpoint mapping from Result to HTTP status plus problem envelope.
-- Prior art in the codebase: only smoke coverage exists (versioned test endpoints returning OK) and the shared Result and problem-envelope helpers. The test project is otherwise empty with xUnit configured, so this slice establishes the first real unit plus integration pattern for later slices to copy.
+- Modules under test: the create/get use-case validation and conflict behavior as unit tests, and the endpoint mapping from Result to HTTP status plus problem envelope — including the real-database round-trip — as integration tests. No standalone repository tests; the validation matrix lives in unit tests, with at most one invalidation integration test per endpoint.
+- Prior art in the codebase: the implemented merchants create slice under the conventions of `backend/.specs/docs/automated-tests.md` (xUnit, builders, NSubstitute, Given–When–Then naming, single parenthesized trait). This slice is the reference application of those conventions for later slices to copy.
 
 ## Out of Scope
 
@@ -56,4 +56,4 @@ Provide a minimal `Merchants` capability with two endpoints on the single versio
 ## Further Notes
 
 - The read-protection of `GET /v1/merchants/{id}` creates a forward dependency on the connect slice; build order remains merchants first, then app clients, then connect, wiring the auth guard when connect lands.
-- Triage vocabulary file was not found in the repo; `ready-for-agent` is applied per the skill instructions. Glossary and ADRs do not exist yet and were skipped silently per the domain guidance.
+- Build status: the create and get endpoints are implemented (see `issues/01-create-merchant.md` and `issues/02-get-merchant.md`; the get read is temporarily public by its ticket, with Bearer protection registered as explicit debt for the connect slice). Glossary and ADRs do not exist yet and were skipped silently per the domain guidance.

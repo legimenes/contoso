@@ -18,13 +18,14 @@ internal static class EndpointExtensions
         return services;
     }
 
-    internal static IApplicationBuilder MapEndpoints(this WebApplication app, RouteGroupBuilder? routeGroupBuilder = null)
+    internal static IApplicationBuilder MapEndpoints(this WebApplication app)
     {
+        RouteGroupBuilder versionedGroup = ApiGroup.MapVersionedGroup(app);
+
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
-        IEndpointRouteBuilder builder = routeGroupBuilder is null ? app : routeGroupBuilder;
         foreach (IEndpoint endpoint in endpoints)
         {
-            endpoint.MapEndpoint(builder);
+            endpoint.MapEndpoint(versionedGroup);
         }
         return app;
     }

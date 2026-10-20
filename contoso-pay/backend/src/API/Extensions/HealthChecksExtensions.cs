@@ -8,6 +8,7 @@ internal static class HealthChecksExtensions
     internal static IServiceCollection AddHealthMonitoring(this IServiceCollection services)
     {
         services.AddHealthChecks();
+        //.AddSqlServer(builder.Configuration["ConnectionStrings:Postgres"]!, name: "PostgreSQL");
         return services;
     }
 
@@ -21,6 +22,8 @@ internal static class HealthChecksExtensions
 
                 var response = new
                 {
+                    //apiVersion
+                    dotnetVersion = Environment.Version.ToString(),
                     status = report.Status.ToString(),
                     checks = report.Entries.Select(entry => new
                     {

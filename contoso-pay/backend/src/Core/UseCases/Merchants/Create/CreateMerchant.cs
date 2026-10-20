@@ -20,7 +20,7 @@ public sealed class CreateMerchant(
         }
 
         string document = request.Document.Trim();
-        if (await repository.ExistsByDocumentAsync(document, cancellationToken).ConfigureAwait(false))
+        if (await repository.ExistsByDocumentAsync(document, cancellationToken))
         {
             return Result.Failure<CreateMerchantResponse>(Error.New(Resource.Validation_Document_AlreadyExists), ResultType.Conflict);
         }

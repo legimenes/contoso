@@ -105,3 +105,4 @@ Do not declare `DbSet<TEntity>` properties in the `DbContext` to expose entities
 - **File-scoped namespaces**: All C# files must use file-scoped namespaces instead of block-scoped namespaces.
 - **Primary constructors**: Use primary constructors whenever a class or record requires constructor parameters. Avoid declaring explicit constructors when the primary constructor syntax is applicable.
 - **Expression-bodied member**: Não utilize expression-bodied members (=>) na declaração de métodos. Sempre utilize a sintaxe tradicional com blocos de código delimitados por {}. Métodos que retornam valores devem utilizar a instrução `return` explicitamente.
+- **Never add a newline character at the end of a C# source file**: The file must end immediately after the final character of the last line of code, typically the closing brace `}`.

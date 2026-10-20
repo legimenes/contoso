@@ -27,7 +27,7 @@ public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory fac
 
             // Then
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            using JsonDocument body = await ReadBodyAsync(response);
+            using JsonDocument body = await TestingWebApplicationFactory.ReadBodyAsync(response);
             Assert.True(body.RootElement.TryGetProperty("id", out JsonElement id));
             Assert.NotEqual(Guid.Empty, id.GetGuid());
         }
@@ -49,7 +49,7 @@ public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory fac
 
         // Then
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        using JsonDocument body = await ReadBodyAsync(response);
+        using JsonDocument body = await TestingWebApplicationFactory.ReadBodyAsync(response);
         AssertProblemEnvelope(body, 400, "BadRequest");
     }
 
@@ -71,7 +71,7 @@ public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory fac
             // Then
             Assert.Equal(HttpStatusCode.Created, first.StatusCode);
             Assert.Equal(HttpStatusCode.Conflict, second.StatusCode);
-            using JsonDocument body = await ReadBodyAsync(second);
+            using JsonDocument body = await TestingWebApplicationFactory.ReadBodyAsync(second);
             AssertProblemEnvelope(body, 409, "Conflict");
         }
         finally
@@ -87,12 +87,6 @@ public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory fac
         Assert.True(body.RootElement.GetProperty("errors").GetArrayLength() > 0);
     }
 
-    private static async Task<JsonDocument> ReadBodyAsync(HttpResponseMessage response)
-    {
-        return await response.Content.ReadFromJsonAsync<JsonDocument>(CancellationToken.None)
-            ?? throw new InvalidOperationException("Empty response body.");
-    }
-
     private static string NewDocument()
     {
         return Random.Shared.NextInt64(10_000_000_000L, 100_000_000_000_000L).ToString();
@@ -100,9 +94,9 @@ public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory fac
 
     private async Task DeleteByDocumentAsync(string document)
     {
-        await using NpgsqlConnection connection = new NpgsqlConnection(_connectionString);
+        await using NpgsqlConnection connection = new (_connectionString);
         await connection.OpenAsync();
-        await using NpgsqlCommand command = new NpgsqlCommand("DELETE FROM contosopay.merchants WHERE document = @document", connection);
+        await using NpgsqlCommand command = new ("DELETE FROM contosopay.merchants WHERE document = @document", connection);
         command.Parameters.AddWithValue("document", document);
         await command.ExecuteNonQueryAsync();
     }

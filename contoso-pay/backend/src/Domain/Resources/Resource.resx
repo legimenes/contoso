@@ -129,6 +129,9 @@
   <data name="Validation_Document_Required" xml:space="preserve">
     <value>Document is required.</value>
   </data>
+  <data name="Validation_Merchant_NotFound" xml:space="preserve">
+    <value>Merchant not found.</value>
+  </data>
   <data name="Validation_Name_MaxLength" xml:space="preserve">
     <value>Name must be at most {0} characters.</value>
   </data>

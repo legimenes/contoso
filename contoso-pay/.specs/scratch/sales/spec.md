@@ -55,8 +55,8 @@ Provide a unified `sales` capability on the single versioned base with one `Paym
 ## Testing Decisions
 
 - A good test asserts externally observable behavior (status codes, status transitions, masked-only card exposure, isolation, idempotency, deterministic approve/deny, partial math, and audit logging), not adapter internals or simulator implementation details.
-- Modules under test: create validation per type, simulator approve/deny/ceiling matrix, capture total/partial/over-capture rules, voided versus refunded branching with partial exhaustion, consult by both keys with cross-merchant invisibility, repository round-trip with uniqueness enforcement, and endpoint mapping to HTTP plus problem envelope.
-- Prior art: smoke endpoints plus shared Result/problem helpers, with merchants, app clients, and connect establishing the xUnit unit plus integration pattern. This slice copies that pattern and adds state-machine transition coverage as the new prior art for lifecycle testing.
+- Modules under test: create validation per type, simulator approve/deny/ceiling matrix, capture total/partial/over-capture rules, voided versus refunded branching with partial exhaustion, and consult by both keys with cross-merchant invisibility as unit tests; endpoint mapping to HTTP plus problem envelope — including the real-database round-trip with uniqueness enforcement — as integration tests. No standalone repository tests; the validation matrix lives in unit tests, with at most one invalidation integration test per endpoint.
+- Prior art: the conventions codified in `backend/.specs/docs/automated-tests.md` and their application in earlier slices (xUnit, builders, NSubstitute, Given–When–Then naming, single parenthesized trait). This slice copies that pattern and adds state-machine transition coverage as the new prior art for lifecycle testing.
 
 ## Out of Scope
 
@@ -66,4 +66,4 @@ Provide a unified `sales` capability on the single versioned base with one `Paym
 ## Further Notes
 
 - This is the last slice of the agreed build order (merchants, app clients, connect, then sales) and becomes verifiable end-to-end only with a Bearer token from connect.
-- Glossary and ADRs are intentionally skipped per explicit user direction. Triage vocabulary file was not found; `ready-for-agent` is applied per the skill instructions.
+- Glossary and ADRs are intentionally skipped per explicit user direction. Test conventions are documented in `backend/.specs/docs/automated-tests.md`.
