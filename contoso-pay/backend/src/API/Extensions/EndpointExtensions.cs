@@ -20,7 +20,7 @@ internal static class EndpointExtensions
 
     internal static IApplicationBuilder MapEndpoints(this WebApplication app)
     {
-        RouteGroupBuilder versionedGroup = ApiGroup.MapVersionedGroup(app);
+        RouteGroupBuilder versionedGroup = RouteGroup.MapVersionedGroup(app);
 
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
         foreach (IEndpoint endpoint in endpoints)

@@ -2,7 +2,7 @@ using Asp.Versioning;
 
 namespace API.Endpoints;
 
-internal static class ApiGroup
+internal static class RouteGroup
 {
     internal const string Prefix = "/v{version:apiVersion}";
 

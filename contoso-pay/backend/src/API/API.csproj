@@ -3,7 +3,7 @@
 	<UserSecretsId>14C92CA8-4E5A-4366-9E21-58F5F48D349F</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
-	<Version>0.0.0</Version>
+	<Version>0.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="appsettings.Testing.json" />
@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
     <PackageReference Include="Asp.Versioning.OpenApi" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="Scalar.AspNetCore" />

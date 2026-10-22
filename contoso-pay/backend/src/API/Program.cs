@@ -13,7 +13,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     builder.Services.AddErrorHandling();
     builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     builder.Services.AddVersioning();
-    builder.Services.AddHealthMonitoring();
+    builder.Services.AddHealthMonitoring(builder.Configuration);
     builder.Services.AddCore();
     builder.Services.AddPersistence(builder.Configuration);
 }

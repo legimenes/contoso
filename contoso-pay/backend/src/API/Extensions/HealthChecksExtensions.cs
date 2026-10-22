@@ -5,10 +5,10 @@ namespace API.Extensions;
 
 internal static class HealthChecksExtensions
 {
-    internal static IServiceCollection AddHealthMonitoring(this IServiceCollection services)
+    internal static IServiceCollection AddHealthMonitoring(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHealthChecks();
-        //.AddSqlServer(builder.Configuration["ConnectionStrings:Postgres"]!, name: "PostgreSQL");
+        services.AddHealthChecks()
+            .AddNpgSql(configuration.GetConnectionString("Postgres")!, name: "PostgreSQL");
         return services;
     }
 
@@ -22,13 +22,14 @@ internal static class HealthChecksExtensions
 
                 var response = new
                 {
-                    //apiVersion
-                    dotnetVersion = Environment.Version.ToString(),
-                    status = report.Status.ToString(),
-                    checks = report.Entries.Select(entry => new
+                    ApplicationName = ApplicationInfo.Name,
+                    ApplicationVersion = ApplicationInfo.GetApplicationVersion(),
+                    DotnetVersion = ApplicationInfo.GetNETVersion(),
+                    Status = report.Status.ToString(),
+                    Checks = report.Entries.Select(entry => new
                     {
-                        name = entry.Key,
-                        status = entry.Value.Status.ToString()
+                        Name = entry.Key,
+                        Status = entry.Value.Status.ToString()
                     })
                 };
 

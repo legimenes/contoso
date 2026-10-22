@@ -122,5 +122,23 @@ namespace Domain.Resources {
                 return ResourceManager.GetString("Validation_Name_Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page size must be between {0} and {1}..
+        /// </summary>
+        public static string Validation_PageSize_Range {
+            get {
+                return ResourceManager.GetString("Validation_PageSize_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page must be at least {0}..
+        /// </summary>
+        public static string Validation_Page_Minimum {
+            get {
+                return ResourceManager.GetString("Validation_Page_Minimum", resourceCulture);
+            }
+        }
     }
 }

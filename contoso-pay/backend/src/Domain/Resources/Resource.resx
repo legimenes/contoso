@@ -138,4 +138,10 @@
   <data name="Validation_Name_Required" xml:space="preserve">
     <value>Name is required.</value>
   </data>
+  <data name="Validation_PageSize_Range" xml:space="preserve">
+    <value>Page size must be between {0} and {1}.</value>
+  </data>
+  <data name="Validation_Page_Minimum" xml:space="preserve">
+    <value>Page must be at least {0}.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Adapters.Persistence;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ public sealed class TestingWebApplicationFactory
 
     public static string GetConnectionString(WebApplicationFactory<Program> factory)
     {
-        return factory.Services.GetRequiredService<IConfiguration>().GetConnectionString("Postgres")
+        return factory.Services.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringNames.PostgresConnection)
             ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
     }
 

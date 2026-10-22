@@ -18,7 +18,7 @@ public sealed class CreateMerchantTests
         CreateMerchantRequest request = new CreateMerchantRequestBuilder().Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
         repository.ExistsByDocumentAsync(request.Document, Arg.Any<CancellationToken>()).Returns(false);
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -39,7 +39,7 @@ public sealed class CreateMerchantTests
         // Given
         CreateMerchantRequest request = new CreateMerchantRequestBuilder().WithName(string.Empty).Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -58,7 +58,7 @@ public sealed class CreateMerchantTests
         // Given
         CreateMerchantRequest request = new CreateMerchantRequestBuilder().WithDocument(string.Empty).Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -79,7 +79,7 @@ public sealed class CreateMerchantTests
             .WithName(new string('N', CreateMerchantRequestValidator.NameMaxLength + 1))
             .Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -100,7 +100,7 @@ public sealed class CreateMerchantTests
             .WithDocument(new string('1', CreateMerchantRequestValidator.DocumentMaxLength + 1))
             .Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -120,7 +120,7 @@ public sealed class CreateMerchantTests
         CreateMerchantRequest request = new CreateMerchantRequestBuilder().Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
         repository.ExistsByDocumentAsync(request.Document, Arg.Any<CancellationToken>()).Returns(true);
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -142,7 +142,7 @@ public sealed class CreateMerchantTests
         repository.ExistsByDocumentAsync(request.Document, Arg.Any<CancellationToken>()).Returns(false);
         repository.AddAsync(Arg.Any<Merchant>(), Arg.Any<CancellationToken>())
             .Throws(new DuplicateMerchantDocumentException(request.Document));
-        CreateMerchant useCase = new (repository, new CreateMerchantRequestValidator());
+        CreateMerchant useCase = new (new CreateMerchantRequestValidator(), repository);
 
         // When
         Result<CreateMerchantResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);

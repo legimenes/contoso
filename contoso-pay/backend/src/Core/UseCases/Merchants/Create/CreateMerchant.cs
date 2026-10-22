@@ -8,8 +8,8 @@ using FluentValidation.Results;
 namespace Core.UseCases.Merchants.Create;
 
 public sealed class CreateMerchant(
-    IMerchantRepository repository,
-    IValidator<CreateMerchantRequest> validator) : ICreateMerchant
+    IValidator<CreateMerchantRequest> validator,
+    IMerchantRepository repository) : ICreateMerchant
 {
     public async Task<Result<CreateMerchantResponse>> ExecuteAsync(CreateMerchantRequest request, CancellationToken cancellationToken)
     {

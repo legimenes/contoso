@@ -1,0 +1,36 @@
+# 03: Listar merchants (document ou name, paginado)
+
+**What to build:** um operador lista merchants com paginação, buscando por documento exato e/ou por nome (prefixo, sem distinguir maiúsculas); sem filtros, lista tudo. A resposta usa o envelope de paginação padronizado.
+
+**Blocked by:** None (01 e 02 estão `resolved`).
+
+**Status:** resolved
+
+- [x] `GET /v1/merchants` público, sem filtros, retorna `200 {page, pageSize, totalItems, totalPages, items: [{id, name, document}]}` paginado (defaults 1/20), ordenado sem maiúsculas por nome com desempate por id (registro não repete nem some entre páginas)
+- [x] Filtro `document` é igualdade exata (dígitos crus, trimmed); filtro `name` é prefixo sem distinção de caixa (trimmed) com `%`/`_` tratados como literais; os dois juntos combinam com AND
+- [x] `page < 1` ou `pageSize` fora de 1–100 retorna `400` no envelope padrão de problema, com mensagens do resource file (nada no endpoint HTTP)
+- [x] Parâmetros ausentes assumem os defaults; página além do fim retorna `200` com `items` vazio; zero registros produz `totalPages = 0`
+- [x] Envelope de paginação genérico (`PagedResponse<T>`) publicado no `Abstractions` do Core e item do slice com registro próprio (id, name, document — sem `createdAtUtc`)
+- [x] Sem DDL delta: `docker\scripts\postgresql\01-objects.sql` intacto (sem índice trigram em `name`)
+- [x] Endpoint versionado (v1), agrupado em Merchants no Scalar, com exemplo executável
+- [ ] Dívida de proteção por Bearer registrada como no ticket 02, a ligar quando o slice de connect existir
+  *(Critério de dívida: registrado em comentário no `ListMerchantsEndpoint.cs`; o item só fecha quando o guard entrar no slice de connect.)*
+
+## Comments
+
+- Espec produzida via três rounds de grilling com decisões fechadas (semântica de filtros/complemento AND, case-insensitive prefix, faixa de paginação 1–100, ordenação estável, envelope genérico, item sem `createdAtUtc`, sem índice novo, página além do fim = 200 vazio). Espec do slice atualizada: user stories 14–23, contrato do GET de listagem em Implementation Decisions, cobertura de listagem em Testing Decisions e remoção de "listing/pagination" do Out of Scope.
+- Seams conferidos com o usuário e herdados do slice: endpoint HTTP é o seam primário de verificação (Postgres real, porta 5333); seam de use case para os unit tests (NSubstitute na porta); a nova porta `SearchAsync` é seam de implementação, sem testes standalone — nenhum seam novo introduzido além do método de porta.
+- Implementado como slice vertical `List` (`IListMerchants`, `ListMerchants`, `ListMerchantsRequest` com `Document`/`Name`/`Page`/`PageSize` opcionais, `MerchantListItem` sem `createdAtUtc`, `ListMerchantsRequestValidator` FluentValidation com mensagens `Validation_Page_Minimum`/`Validation_PageSize_Range` adicionadas aos `Resource.resx`/`pt-BR` + Designer). `PagedResponse<T>` genérico criado em `Core\Abstractions`. Porta `IMerchantRepository` ganhou `SearchAsync`, implementada no adapter EF com `AsNoTracking`, ILIKE escapado (`\`, `%`, `_` literais), count + `Skip/Take`, ordenação `LOWER(name)`, `id`. Defaults 1/20 aplicados no use case, que também é dono do trim de `document`/`name`. Endpoint `GET /v1/merchants` com binding `[AsParameters]` (nomes `Document`/`Name`/`Page`/`PageSize`; case-insensitive), dívida de Bearer em comentário como no ticket 02. Sem DDL delta e sem package novo.
+- Testes conforme `automated-tests.md`: unidade NSubstitute no seam de use case 6/6 (defaults, mapeamento do envelope e dos itens, trim dos filtros, `page < 1` → 400, `pageSize` 0/101 → 400, ambos sem tocar a repos). Integração via `WebApplicationFactory` com Postgres real (porta 5333) 9/9: envelope com metadata e ordenação case-insensitive (prefix match em caixa trocada), `document` exato, AND de filtros, `%`/`_` como literais, página além do fim → 200 vazio, zero registros → `totalPages = 0`, estabilidade page 1+2 sem repetição/perda, e `page=0` → 400 no envelope com a mensagem exata da resource. Suite total 31/31 verde, build 0 warnings.
+- Exemplo executável: `API.http` ganhou `GET /v1/merchants?name=Loja&page=1&pageSize=20`; OpenAPI v1 apresenta o path `/v1/merchants` com a tag `Merchants`, summary e os 4 parâmetros query (verificado rodando a API em Development). Observation: `WithOpenApi` está obsoleto no .NET 10 (warning de deprecação) — o exemplo ficou como texto em `WithDescription`/`WithSummary`, sem transformer global.
+- Sobre o ILIKE: `\` escapa `%`, `_` e `\`; o Postgres trata `\` como escape default do `LIKE`, então não há cláusula `ESCAPE`. Ordenação por `LOWER(name)` mantém o requisito "sem maiúsculas"; `id` desempata.
+- Decisão pós-code-review: o trim dos filtros é de responsabilidade única do use case; remover o trim defensivo duplicado no adapter. `page=abc` (não inteiro) falha no binding do `[AsParameters]` antes do validator e responde 400 sem envelope — fora do escopo do critério (que cobre `page < 1` e `pageSize` fora de 1–100); registrar como observação de dívida se um slice futuro exigir envelope uniforme em erros de binding.
+- Pós-implementação: contrato de paginação centralizado conforme ADR-0001 (`.specs/adr/0001-shared-pagination-contract.md`) — `ListMerchantsRequest` herdou de `PaginationRequest` com defaults via constantes da base, validator herdando de `PaginationRequestValidator<TRequest>`, `PagedResponse<T>` movido para `Core\Abstractions\Pagination`. Contrato HTTP e mensagens intocados; suite 31/31, build 0 warnings.
+- Ticket 04 (separação do acesso de leitura do acesso a agregados): `SearchAsync` saiu da porta `IMerchantRepository` e virou `IMerchantQueries.SearchAsync`, devolvendo `PagedResponse<ListMerchantsResponse>` — o read side deixou de devolver a entidade de domínio e passou a projetar direto no record do slice. A semântica de filtro, ordenação e paginação deste ticket foi preservada integralmente (ILIKE escapado, `LOWER(name)` + `id`, count + `Skip/Take`, página além do fim = 200 vazio, zero registros = `totalPages` 0) e o contrato HTTP ficou intocado. Detalhes e rationale em `.specs/adr/0002-repositorio-para-agregados-queries-para-leitura.md`.
+
+## Technical plan (approved)
+
+- DDL delta: nenhum (`01-objects.sql` não alterado).
+- Classes: `PagedResponse<T>` (record genérico com Page, PageSize, TotalItems, TotalPages, Items — novo, no `Core\Abstractions`); slice `List` no Core (`IListMerchants`, `ListMerchants`, `ListMerchantsRequest` com Document/Name/Page/PageSize nulos com defaults 1/20, `MerchantListItem` Id/Name/Document, `ListMerchantsRequestValidator` FluentValidation: page ≥ 1, pageSize 1–100); método `SearchAsync(document, namePrefix, page, pageSize, ct)` adicionado à porta existente de merchants, implementado no adapter EF com `AsNoTracking`, ILIKE escapado, count + Skip/Take ordenados por LOWER(name), id; endpoint `GET /v1/merchants` (binding por `[AsParameters]`, v1, tags de merchants, 200/400 via mapper Result→response).
+- Libs: nenhum package novo (FluentValidation, EF Core, Npgsql, Asp.Versioning já presentes).
+- Seams/ports: porta de repositório estendida (sem testes standalone); unit tests no seam de use case com builder de request; integração no seam do endpoint com Postgres real e cleanup por SQL; no máximo um teste de invalidação por endpoint.

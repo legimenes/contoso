@@ -10,6 +10,11 @@ Content-Type: application/json
 
 ###
 
+GET {{API_HostAddress}}/v1/merchants?name=Loja&page=1&pageSize=20
+Accept: application/json
+
+###
+
 GET {{API_HostAddress}}/v1/merchants/00000000-0000-0000-0000-000000000001
 Accept: application/json
 

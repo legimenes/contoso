@@ -1,3 +1,4 @@
+using Adapters.Persistence.Queries;
 using Adapters.Persistence.Repositories;
 using Core.UseCases.Merchants;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        string postgresConnectionString = configuration.GetConnectionString("Postgres")
+        string postgresConnectionString = configuration.GetConnectionString(ConnectionStringNames.PostgresConnection)
             ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
         services.AddDbContext<ContosoPayDbContext>(options => options.UseNpgsql(postgresConnectionString));
         services.AddScoped<IMerchantRepository, MerchantRepository>();
+        services.AddScoped<IMerchantQueries, MerchantQueries>();
         return services;
     }
 }
