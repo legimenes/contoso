@@ -1,7 +1,7 @@
 using Core.Abstractions.Pagination;
-using Core.UseCases.Merchants.List;
+using Core.UseCases.Merchants.ListMerchants;
 
-namespace Tests.Core.Merchants.List;
+namespace Tests.Core.UseCases.Merchants.ListMerchants;
 
 public sealed class ListMerchantsRequestBuilder
 {

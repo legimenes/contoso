@@ -1,6 +1,6 @@
 # Automated Tests
 
-The automated testing project uses the `xUnit` framework and implements a comprehensive automated test suite, including **unit tests** for **use cases**, **services**, and **rich domain entities**, as well as **integration tests** to validate the application's complete flow starting from the **HTTP endpoints**.
+The automated testing project uses the `xUnit` framework and implements a comprehensive automated test suite, including **unit tests** for **use-cases**, **services**, and **rich domain entities**, as well as **integration tests** to validate the application's complete flow starting from the **HTTP endpoints**.
 
 All automated tests must follow the **Given–When–Then** pattern:
 
@@ -13,15 +13,18 @@ Conceptual example of folder structure:
 ```text
 Tests/
 ├── Core/
-│   └── Customers/
-│       └── Create/
-│           ├── CreateCustomerBuilder.cs
-│           ├── CreateCustomerEndpointTests.cs
-│           └── CreateCustomerTests.cs
+│   └── UseCases/
+│       └── Customers/
+│           └── CreateCustomer/
+│               ├── CreateCustomerRequestBuilder.cs
+│               ├── CreateCustomerEndpointTests.cs
+│               └── CreateCustomerTests.cs
 └── Domain/
     ├── CustomerBuilder.cs
     └── CustomerTests.cs
 ```
+
+Test folders mirror the production slices: use-case tests live under `Tests/Core/UseCases/<Feature>/<Operation>/`, and domain tests live under `Tests/Domain/`.
 
 ## Test Methods Conventions
 
@@ -90,7 +93,7 @@ Trait attributes can receive the following values:
 
 Unit tests must cover:
 
-- **Use Cases**: the validations defined in the request validator (if one exists), business rules, decision flows, and interactions with dependencies.
+- **Use-Cases**: the validations defined in the request validator (if one exists), business rules, decision flows, and interactions with dependencies.
 - **Services**: service behavior, including processing rules, error handling, and interactions with external dependencies.
 - **Rich Domain Entities**: test the entities' behaviors, invariants, business rules, methods, and state transitions. Prioritize observable behavior rather than merely achieving coverage of properties or trivial methods.
 
@@ -131,13 +134,13 @@ public sealed class CreateCustomerRequestBuilder
 
 ## Integration Tests
 
-Integration tests must be created **exclusively for HTTP endpoints** and must validate the application's execution flow, starting with an HTTP request and continuing through the relevant application and domain layers to the persistence layer, when applicable. Do not create standalone integration tests for repositories, services, use cases, domain entities, or any other individual component.
+Integration tests must be created **exclusively for HTTP endpoints** and must validate the application's execution flow, starting with an HTTP request and continuing through the relevant application and domain layers to the persistence layer, when applicable. Do not create standalone integration tests for repositories, services, use-cases, domain entities, or any other individual component.
 
 Request validation must not be extensively tested through integration tests. At most, one integration test per endpoint is required to verify that request validation is triggered and that an invalid request produces the expected HTTP response. Do not create integration test cases specifically to verify request validation rules, such as required fields, invalid formats, missing values, or invalid property values. These validations should be covered by appropriate unit tests.
 
 Preferably use `WebApplicationFactory<TEntryPoint>` and the `Microsoft.AspNetCore.Mvc.Testing` package when compatible with the application's structure.
 
-*Substitutes* should be used for external dependencies when appropriate for the test scenario. However, do not substitute use cases, services, or domain entities that are part of the application flow being validated by the test.
+*Substitutes* should be used for external dependencies when appropriate for the test scenario. However, do not substitute use-cases, services, or domain entities that are part of the application flow being validated by the test.
 
 At the end of an assisted execution, debugging session, or validation workflow, integration tests may be skipped using the **xUnit** `Skip` attribute **to avoid unnecessary consumption of external resources**.
 

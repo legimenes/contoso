@@ -12,10 +12,10 @@ The primary goal of this architecture is to isolate business rules from infrastr
 
 The solution is divided into the following logical projects, following a strict dependency direction rule (from the outside in):
 
-- **`API`**: The application's entry point. It uses the ASP.NET Core Minimal APIs pattern. It is responsible only for routing, initial dependency injection, and mapping HTTP requests to use cases.
+- **`API`**: The application's entry point. It uses the ASP.NET Core Minimal APIs pattern. It is responsible only for routing, initial dependency injection, and mapping HTTP requests to use-cases.
 - **`Domain`**: The heart of the software. It contains exclusively the entities and domain rules inherent to the business. **It has no dependencies on infrastructure or any other project in the solution**.
 - **`Domain`**: The heart of the software. It contains the entities and domain rules inherent to the business. It also contains common classes, value objects and types that need to be shared exclusively between the `Domain` and `Core` layers (e.g., result types, standardized domain exceptions, and base interfaces). **It has no dependencies on infrastructure or any other project in the solution**.
-- **`Core`**: The orchestration layer. It contains the application's use cases and domain services. This is where the application flow is orchestrated. It depends on `Domain` and `SharedKernel`.
+- **`Core`**: The orchestration layer. It contains the application's use-cases and domain services. This is where the application flow is orchestrated. It depends on `Domain` and `SharedKernel`.
 - **`Adapters.Persistence`**: The concrete implementation of data access. It contains repositories, ORM configurations (such as Entity Framework Core), and database migrations. It acts as an **outbound Adapter**.
 - **`Tests`**: Automated testing setup covering both unit and integration tests.
 
@@ -27,7 +27,7 @@ The entire business domain is contained within a single context. We do not prema
 
 ### Vertical Slice and Screaming Architecture
 
-The `Core` layer is not organized by technical concerns (e.g., `UseCases folders`, `DTOs folders`), but rather by **business capabilities** (Screaming Architecture).
+The `Core` layer is organized by **business capabilities** (Screaming Architecture), not by technical concerns. `Core/UseCases/<Feature>/<Operation>/` keeps every file for an operation together; only cross-cutting contracts live under `Core/Abstractions/`.
 
 ### Ports and Adapters (Hexagonal Architecture)
 
@@ -42,5 +42,5 @@ The application was designed to be agnostic to external resources (vendors).
 ### Strict Rules (Do Not Violate!):
 
 - The **Domain** layer must never reference **Core**, **Persistence**, **API**, or **Adapters**.
-- Circular references between Slices within **Core** must be avoided. If two use cases share a significant amount of logic, extract it into a **domain service within Core**.
+- Circular references between Slices within **Core** must be avoided. If two use-cases share a significant amount of logic, extract it into a **domain service within Core**.
 - **Adapters** projects reference **Core** (to implement its interfaces), but **Core** must never reference the adapters. Composition and dependency injection take place exclusively at the **API** level (Composition Root).

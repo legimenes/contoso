@@ -1,6 +1,6 @@
 using Domain.Core.Results;
 
-namespace Core.UseCases.Merchants.GetById;
+namespace Core.UseCases.Merchants.GetMerchantById;
 
 public interface IGetMerchantById
 {

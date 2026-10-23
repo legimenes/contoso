@@ -1,3 +1,3 @@
-namespace Core.UseCases.Merchants.GetById;
+namespace Core.UseCases.Merchants.GetMerchantById;
 
 public sealed record GetMerchantByIdRequest(Guid Id);

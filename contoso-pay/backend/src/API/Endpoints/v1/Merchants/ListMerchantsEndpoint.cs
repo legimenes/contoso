@@ -1,6 +1,6 @@
 using API.Middlewares;
 using Core.Abstractions.Pagination;
-using Core.UseCases.Merchants.List;
+using Core.UseCases.Merchants.ListMerchants;
 using Domain.Core.Results;
 
 namespace API.Endpoints.v1.Merchants;

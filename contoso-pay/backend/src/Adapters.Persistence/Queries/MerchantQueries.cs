@@ -1,6 +1,6 @@
 using Core.Abstractions.Pagination;
 using Core.UseCases.Merchants;
-using Core.UseCases.Merchants.List;
+using Core.UseCases.Merchants.ListMerchants;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 

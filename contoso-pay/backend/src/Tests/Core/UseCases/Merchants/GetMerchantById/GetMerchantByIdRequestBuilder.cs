@@ -1,6 +1,6 @@
-using Core.UseCases.Merchants.GetById;
+using Core.UseCases.Merchants.GetMerchantById;
 
-namespace Tests.Core.Merchants.GetById;
+namespace Tests.Core.UseCases.Merchants.GetMerchantById;
 
 public sealed class GetMerchantByIdRequestBuilder
 {

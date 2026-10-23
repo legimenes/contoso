@@ -1,7 +1,7 @@
 using Core.Abstractions.Pagination;
 using Domain.Core.Results;
 
-namespace Core.UseCases.Merchants.List;
+namespace Core.UseCases.Merchants.ListMerchants;
 
 public interface IListMerchants
 {

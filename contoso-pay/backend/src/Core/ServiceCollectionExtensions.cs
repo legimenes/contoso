@@ -1,6 +1,6 @@
-﻿using Core.UseCases.Merchants.Create;
-using Core.UseCases.Merchants.GetById;
-using Core.UseCases.Merchants.List;
+﻿using Core.UseCases.Merchants.CreateMerchant;
+using Core.UseCases.Merchants.GetMerchantById;
+using Core.UseCases.Merchants.ListMerchants;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 

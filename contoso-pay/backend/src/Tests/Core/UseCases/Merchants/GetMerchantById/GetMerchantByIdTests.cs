@@ -1,12 +1,13 @@
 using Core.UseCases.Merchants;
-using Core.UseCases.Merchants.GetById;
+using Core.UseCases.Merchants.GetMerchantById;
 using Domain;
 using Domain.Core.Results;
 using Domain.Resources;
 using NSubstitute;
 using Tests.Domain;
+using UseCase = Core.UseCases.Merchants.GetMerchantById;
 
-namespace Tests.Core.Merchants.GetById;
+namespace Tests.Core.UseCases.Merchants.GetMerchantById;
 
 public sealed class GetMerchantByIdTests
 {
@@ -19,7 +20,7 @@ public sealed class GetMerchantByIdTests
         GetMerchantByIdRequest request = new GetMerchantByIdRequestBuilder().WithId(merchant.Id).Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
         repository.GetByIdAsync(merchant.Id, Arg.Any<CancellationToken>()).Returns(merchant);
-        GetMerchantById useCase = new(repository);
+        UseCase.GetMerchantById useCase = new(repository);
 
         // When
         Result<GetMerchantByIdResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);
@@ -42,7 +43,7 @@ public sealed class GetMerchantByIdTests
         GetMerchantByIdRequest request = new GetMerchantByIdRequestBuilder().Build();
         IMerchantRepository repository = Substitute.For<IMerchantRepository>();
         repository.GetByIdAsync(request.Id, Arg.Any<CancellationToken>()).Returns((Merchant?)null);
-        GetMerchantById useCase = new(repository);
+        UseCase.GetMerchantById useCase = new(repository);
 
         // When
         Result<GetMerchantByIdResponse> result = await useCase.ExecuteAsync(request, CancellationToken.None);

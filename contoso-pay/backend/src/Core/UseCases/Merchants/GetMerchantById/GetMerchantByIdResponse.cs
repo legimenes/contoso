@@ -1,4 +1,4 @@
-namespace Core.UseCases.Merchants.GetById;
+namespace Core.UseCases.Merchants.GetMerchantById;
 
 public sealed record GetMerchantByIdResponse(
     Guid Id,

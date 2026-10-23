@@ -1,6 +1,6 @@
-using Core.UseCases.Merchants.Create;
+using Core.UseCases.Merchants.CreateMerchant;
 
-namespace Tests.Core.Merchants.Create;
+namespace Tests.Core.UseCases.Merchants.CreateMerchant;
 
 public sealed class CreateMerchantRequestBuilder
 {

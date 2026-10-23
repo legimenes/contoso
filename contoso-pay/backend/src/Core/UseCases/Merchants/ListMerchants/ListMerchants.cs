@@ -3,7 +3,7 @@ using Domain.Core.Results;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace Core.UseCases.Merchants.List;
+namespace Core.UseCases.Merchants.ListMerchants;
 
 public sealed class ListMerchants(
     IValidator<ListMerchantsRequest> validator,

@@ -1,4 +1,4 @@
-namespace Core.UseCases.Merchants.List;
+namespace Core.UseCases.Merchants.ListMerchants;
 
 public sealed record ListMerchantsResponse(
     Guid Id,

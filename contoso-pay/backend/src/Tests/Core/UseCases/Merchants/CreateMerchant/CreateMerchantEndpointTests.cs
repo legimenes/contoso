@@ -1,10 +1,10 @@
-using Core.UseCases.Merchants.Create;
+using Core.UseCases.Merchants.CreateMerchant;
 using Npgsql;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace Tests.Core.Merchants.Create;
+namespace Tests.Core.UseCases.Merchants.CreateMerchant;
 
 public sealed class CreateMerchantEndpointTests(TestingWebApplicationFactory factory) : IClassFixture<TestingWebApplicationFactory>
 {

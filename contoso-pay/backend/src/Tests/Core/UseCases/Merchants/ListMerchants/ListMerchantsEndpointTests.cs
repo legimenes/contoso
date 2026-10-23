@@ -5,7 +5,7 @@ using Domain.Core.Extensions;
 using Domain.Resources;
 using Npgsql;
 
-namespace Tests.Core.Merchants.List;
+namespace Tests.Core.UseCases.Merchants.ListMerchants;
 
 public sealed class ListMerchantsEndpointTests(TestingWebApplicationFactory factory) : IClassFixture<TestingWebApplicationFactory>
 {

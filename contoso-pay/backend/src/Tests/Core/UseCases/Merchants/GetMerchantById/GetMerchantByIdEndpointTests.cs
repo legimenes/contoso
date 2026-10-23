@@ -2,9 +2,9 @@ using Npgsql;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Tests.Core.Merchants.Create;
+using Tests.Core.UseCases.Merchants.CreateMerchant;
 
-namespace Tests.Core.Merchants.GetById;
+namespace Tests.Core.UseCases.Merchants.GetMerchantById;
 
 public sealed class GetMerchantByIdEndpointTests(TestingWebApplicationFactory factory) : IClassFixture<TestingWebApplicationFactory>
 {

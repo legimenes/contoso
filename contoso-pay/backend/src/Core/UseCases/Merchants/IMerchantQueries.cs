@@ -1,5 +1,5 @@
 using Core.Abstractions.Pagination;
-using Core.UseCases.Merchants.List;
+using Core.UseCases.Merchants.ListMerchants;
 
 namespace Core.UseCases.Merchants;
 

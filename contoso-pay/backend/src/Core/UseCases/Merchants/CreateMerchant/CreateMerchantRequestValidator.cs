@@ -2,7 +2,7 @@ using Domain.Core.Extensions;
 using Domain.Resources;
 using FluentValidation;
 
-namespace Core.UseCases.Merchants.Create;
+namespace Core.UseCases.Merchants.CreateMerchant;
 
 public sealed class CreateMerchantRequestValidator : AbstractValidator<CreateMerchantRequest>
 {

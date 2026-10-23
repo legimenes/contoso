@@ -1,6 +1,6 @@
 using Core.Abstractions.Pagination;
 
-namespace Core.UseCases.Merchants.List;
+namespace Core.UseCases.Merchants.ListMerchants;
 
 public sealed record ListMerchantsRequest(
     string? Document,

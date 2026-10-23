@@ -1,4 +1,4 @@
-namespace Core.UseCases.Merchants.Create;
+namespace Core.UseCases.Merchants.CreateMerchant;
 
 public sealed record CreateMerchantRequest(
     string Name,

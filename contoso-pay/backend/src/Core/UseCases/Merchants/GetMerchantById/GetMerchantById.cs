@@ -2,7 +2,7 @@ using Domain;
 using Domain.Core.Results;
 using Domain.Resources;
 
-namespace Core.UseCases.Merchants.GetById;
+namespace Core.UseCases.Merchants.GetMerchantById;
 
 public sealed class GetMerchantById(IMerchantRepository repository) : IGetMerchantById
 {

@@ -1,5 +1,5 @@
 using API.Middlewares;
-using Core.UseCases.Merchants.Create;
+using Core.UseCases.Merchants.CreateMerchant;
 using Domain.Core.Results;
 
 namespace API.Endpoints.v1.Merchants;

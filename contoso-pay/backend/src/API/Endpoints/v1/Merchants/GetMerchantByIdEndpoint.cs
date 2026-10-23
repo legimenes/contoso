@@ -1,5 +1,5 @@
 using API.Middlewares;
-using Core.UseCases.Merchants.GetById;
+using Core.UseCases.Merchants.GetMerchantById;
 using Domain.Core.Results;
 
 namespace API.Endpoints.v1.Merchants;

@@ -1,13 +1,14 @@
 using Core.Abstractions.Pagination;
 using Core.UseCases.Merchants;
-using Core.UseCases.Merchants.List;
+using Core.UseCases.Merchants.ListMerchants;
 using Domain.Core.Extensions;
 using Domain.Core.Results;
 using Domain.Resources;
 using NSubstitute;
 using Tests.Core.Abstractions;
+using UseCase = Core.UseCases.Merchants.ListMerchants;
 
-namespace Tests.Core.Merchants.List;
+namespace Tests.Core.UseCases.Merchants.ListMerchants;
 
 public sealed class ListMerchantsTests
 {
@@ -19,7 +20,7 @@ public sealed class ListMerchantsTests
         PagedResponse<ListMerchantsResponse> merchants = new PagedResponseBuilder<ListMerchantsResponse>().Build();
         IMerchantQueries queries = Substitute.For<IMerchantQueries>();
         queries.SearchAsync(Arg.Any<ListMerchantsRequest>(), Arg.Any<CancellationToken>()).Returns(merchants);
-        ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
+        UseCase.ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
 
         // When
         Result<PagedResponse<ListMerchantsResponse>> result = await useCase.ExecuteAsync(new ListMerchantsRequestBuilder().Build(), CancellationToken.None);
@@ -51,7 +52,7 @@ public sealed class ListMerchantsTests
             .Build();
         IMerchantQueries queries = Substitute.For<IMerchantQueries>();
         queries.SearchAsync(Arg.Any<ListMerchantsRequest>(), Arg.Any<CancellationToken>()).Returns(merchants);
-        ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
+        UseCase.ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
 
         // When
         Result<PagedResponse<ListMerchantsResponse>> result = await useCase.ExecuteAsync(
@@ -87,7 +88,7 @@ public sealed class ListMerchantsTests
             .Build();
         IMerchantQueries queries = Substitute.For<IMerchantQueries>();
         queries.SearchAsync(Arg.Any<ListMerchantsRequest>(), Arg.Any<CancellationToken>()).Returns(merchants);
-        ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
+        UseCase.ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
 
         // When
         Result<PagedResponse<ListMerchantsResponse>> result = await useCase.ExecuteAsync(
@@ -119,7 +120,7 @@ public sealed class ListMerchantsTests
     {
         // Given
         IMerchantQueries queries = Substitute.For<IMerchantQueries>();
-        ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
+        UseCase.ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
 
         // When
         Result<PagedResponse<ListMerchantsResponse>> result = await useCase.ExecuteAsync(
@@ -141,7 +142,7 @@ public sealed class ListMerchantsTests
     {
         // Given
         IMerchantQueries queries = Substitute.For<IMerchantQueries>();
-        ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
+        UseCase.ListMerchants useCase = new(new ListMerchantsRequestValidator(), queries);
 
         // When
         Result<PagedResponse<ListMerchantsResponse>> result = await useCase.ExecuteAsync(
