@@ -119,6 +119,10 @@ Do not use *Migrations* in **Entity Framework Core** to manage database schema c
 
 Do not declare `DbSet<TEntity>` properties in the `DbContext` to expose entities. To access entities in repositories, use `dbContext.Set<TEntity>()` directly.
 
+## Asynchronous Calls
+
+**Never use `.ConfigureAwait()` in asynchronous code**. This applies to all await expressions throughout the application. Always use await directly on asynchronous operations without chaining `.ConfigureAwait(false)` or `.ConfigureAwait(true)`.
+
 ## General Coding Rules and Style
 
 - **Nested classes are not allowed within the same file**: Classes must always be defined in separate files, in order to maintain clean navigation and appropriate granularity.

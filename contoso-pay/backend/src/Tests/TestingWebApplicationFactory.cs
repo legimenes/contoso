@@ -18,8 +18,8 @@ public sealed class TestingWebApplicationFactory
 
     public static string GetConnectionString(WebApplicationFactory<Program> factory)
     {
-        return factory.Services.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringNames.PostgresConnection)
-            ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
+        return factory.Services.GetRequiredService<IConfiguration>().GetConnectionString(PostgresConnectionString.PostgresConnection)
+            ?? throw new InvalidOperationException($"Connection string '{PostgresConnectionString.PostgresConnection}' is not configured.");
     }
 
     public static async Task<JsonDocument> ReadBodyAsync(HttpResponseMessage response)

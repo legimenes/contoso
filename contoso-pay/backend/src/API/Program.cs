@@ -9,7 +9,7 @@ SelfLog.Enable(Console.Error);
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 {
-    builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration.ReadFrom.Configuration(context.Configuration));
+    builder.AddLogging();
     builder.Services.AddErrorHandling();
     builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
     builder.Services.AddVersioning();

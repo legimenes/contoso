@@ -11,8 +11,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        string postgresConnectionString = configuration.GetConnectionString(ConnectionStringNames.PostgresConnection)
-            ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
+        string postgresConnectionString = configuration.GetConnectionString(PostgresConnectionString.PostgresConnection)
+            ?? throw new InvalidOperationException($"Connection string '{PostgresConnectionString.PostgresConnection}' is not configured.");
         services.AddDbContext<ContosoPayDbContext>(options => options.UseNpgsql(postgresConnectionString));
         services.AddScoped<IMerchantRepository, MerchantRepository>();
         services.AddScoped<IMerchantQueries, MerchantQueries>();
