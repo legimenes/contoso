@@ -31,4 +31,11 @@ public sealed class MerchantRepository(ContosoPayDbContext dbContext) : IMerchan
     {
         return dbContext.Set<Merchant>().FirstOrDefaultAsync(merchant => merchant.Id == id, cancellationToken);
     }
+
+    public async Task UpdateAsync(Merchant merchant, CancellationToken cancellationToken)
+    {
+        dbContext.Set<Merchant>().Update(merchant);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

@@ -76,8 +76,8 @@ public sealed class ListMerchantsTests
         // Given
         IReadOnlyList<ListMerchantsResponse> items =
         [
-            new ListMerchantsResponse(Guid.NewGuid(), "Loja Um", "01111111111111"),
-            new ListMerchantsResponse(Guid.NewGuid(), "Loja Dois", "02222222222222")
+            new ListMerchantsResponse(Guid.NewGuid(), "Loja Um", "01111111111111", true),
+            new ListMerchantsResponse(Guid.NewGuid(), "Loja Dois", "02222222222222", false)
         ];
         PagedResponse<ListMerchantsResponse> merchants = new PagedResponseBuilder<ListMerchantsResponse>()
             .WithPage(2)
@@ -106,9 +106,11 @@ public sealed class ListMerchantsTests
         Assert.Equal(items[0].Id, result.Value.Items[0].Id);
         Assert.Equal(items[0].Name, result.Value.Items[0].Name);
         Assert.Equal(items[0].Document, result.Value.Items[0].Document);
+        Assert.Equal(items[0].IsActive, result.Value.Items[0].IsActive);
         Assert.Equal(items[1].Id, result.Value.Items[1].Id);
         Assert.Equal(items[1].Name, result.Value.Items[1].Name);
         Assert.Equal(items[1].Document, result.Value.Items[1].Document);
+        Assert.Equal(items[1].IsActive, result.Value.Items[1].IsActive);
         await queries.Received(1).SearchAsync(
             Arg.Is<ListMerchantsRequest>(query => query.Document == "123" && query.Name == "Loja" && query.Page == 2 && query.PageSize == 50),
             Arg.Any<CancellationToken>());

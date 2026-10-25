@@ -32,6 +32,7 @@ public sealed class GetMerchantByIdTests
         Assert.Equal(merchant.Id, result.Value.Id);
         Assert.Equal(merchant.Name, result.Value.Name);
         Assert.Equal(merchant.Document, result.Value.Document);
+        Assert.Equal(merchant.IsActive, result.Value.IsActive);
         await repository.Received(1).GetByIdAsync(merchant.Id, Arg.Any<CancellationToken>());
     }
 

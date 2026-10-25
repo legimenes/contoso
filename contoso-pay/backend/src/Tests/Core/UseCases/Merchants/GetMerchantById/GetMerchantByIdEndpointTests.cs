@@ -34,6 +34,7 @@ public sealed class GetMerchantByIdEndpointTests(TestingWebApplicationFactory fa
             Assert.Equal(id, body.RootElement.GetProperty("id").GetGuid());
             Assert.Equal(payload.Name, body.RootElement.GetProperty("name").GetString());
             Assert.Equal(document, body.RootElement.GetProperty("document").GetString());
+            Assert.True(body.RootElement.GetProperty("isActive").GetBoolean());
         }
         finally
         {

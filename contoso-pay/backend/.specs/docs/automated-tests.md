@@ -143,5 +143,3 @@ Preferably use `WebApplicationFactory<TEntryPoint>` and the `Microsoft.AspNetCor
 *Substitutes* should be used for external dependencies when appropriate for the test scenario. However, do not substitute use-cases, services, or domain entities that are part of the application flow being validated by the test.
 
 At the end of an assisted execution, debugging session, or validation workflow, integration tests may be skipped using the **xUnit** `Skip` attribute **to avoid unnecessary consumption of external resources**.
-
-If the `TestFixture` class exists, it should serve as a test fixture or test environment bootstrap. Its primary responsibility is to manually configure the dependency injection container `ServiceProvider` to simulate the application environment, allowing infrastructure repositories and services to be tested in isolation without the need to start an HTTP server.

@@ -1,5 +1,6 @@
 @API_HostAddress = http://localhost:5059
 
+# @name createMerchant
 POST {{API_HostAddress}}/v1/merchants
 Content-Type: application/json
 
@@ -16,6 +17,18 @@ Accept: application/json
 ###
 
 GET {{API_HostAddress}}/v1/merchants/00000000-0000-0000-0000-000000000001
+Accept: application/json
+
+###
+
+# Requires the createMerchant request above to have run.
+POST {{API_HostAddress}}/v1/merchants/{{createMerchant.response.body.$.id}}/deactivate
+Accept: application/json
+
+###
+
+# Requires the createMerchant request above to have run.
+POST {{API_HostAddress}}/v1/merchants/{{createMerchant.response.body.$.id}}/activate
 Accept: application/json
 
 ###

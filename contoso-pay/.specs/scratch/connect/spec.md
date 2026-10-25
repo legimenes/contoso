@@ -13,7 +13,7 @@ Provide a single OAuth2-style `client_credentials` capability outside the versio
 1. As an integrator, I want to exchange client id and secret for an access token, so that I can call protected endpoints with a Bearer header.
 2. As an integrator, I want the token request to use a JSON body with grant type plus credentials, so that the study flow stays simple and toolable.
 3. As an integrator, I want the token response to carry token, type, and lifetime, so that my client knows when to request a new one.
-4. As an integrator, I want inactive or unknown credentials rejected, so that disabled integrations stop working immediately.
+4. As an integrator, I want inactive credentials — the app client or its merchant — or unknown credentials rejected, so that disabled integrations stop working immediately.
 5. As an integrator, I want wrong secrets rejected without revealing which field was wrong, so that credential guessing is not aided.
 6. As a platform operator, I want tokens to expire after one hour, so that leaked tokens have a bounded blast radius.
 7. As a platform operator, I want each token bound to exactly one client and one merchant, so that merchant isolation can be enforced downstream.
@@ -31,8 +31,9 @@ Provide a single OAuth2-style `client_credentials` capability outside the versio
   - Unknown/inactive client or wrong secret returns unauthorized; malformed grant or missing fields returns bad request. All via the existing Result pattern.
   - Organization exception: the capability is grouped with version-one code for ownership but its route carries no version prefix.
 - Tokens: symmetric-signed JWT with one-hour lifetime, carrying client id, merchant id, and unique token id claims. Signed by the API's configured key. No refresh tokens, no revocation list, no scopes beyond merchant ownership in this slice.
-- Validation: every protected read and all future sales endpoints require `Authorization: Bearer <access_token>`, validate signature plus expiry plus active credential, and expose the merchant and client identity to the handler for ownership checks. Expired or tampered tokens map to unauthorized.
+- Validation: every protected read and all future sales endpoints require `Authorization: Bearer <access_token>`, validate signature plus expiry, require the app client to be active, and expose the merchant and client identity to the handler for ownership checks. Expired or tampered tokens map to unauthorized.
 - Credential check: look up the app client by id, require active flag, compare the presented secret against the stored salted hash with a constant-time comparison. No plain-secret storage or logging.
+- Merchant gate (forward dependency on the merchant lifecycle slice): issuance also requires the app client's merchant to exist and be active (merchant `is_active`). The check is evaluated at token issuance only, so a token obtained before deactivation stays valid until it expires. The state already exists in the model; nothing is enforced by this spec until connect lands. See `.specs/adr/0003-estado-ativo-do-merchant-barra-credenciais-e-pagamentos.md`.
 - Architecture: follow the repo's Clean + Ports and Adapters + Vertical Slice approach. The application layer exposes a token-issuance capability plus a token-validation service consumed by the HTTP layer; signing/verification and clock are behind ports so tests can run without network or wall-clock flakiness. No business rules in the HTTP layer.
 - Persistence: no new tables. This slice reads the existing merchants and appclients tables only. Token state is stateless; no server-side session storage.
 - Seams for testing (accepted strategy carried forward): the highest existing seam is the HTTP endpoint seam backed by the shared Result-to-response mapper; the second seam is the token use-case seam; new ports are introduced only for signing/verification plus clock and secret comparison if not already present. Endpoint seam remains the primary verifiable seam.
@@ -55,4 +56,5 @@ Provide a single OAuth2-style `client_credentials` capability outside the versio
 ## Further Notes
 
 - Build order remains merchants, then app clients, then connect. Landing connect makes the specified Bearer guards on the earlier get endpoints verifiable end-to-end and unblocks the sales slice.
-- Glossary and ADRs are intentionally skipped per explicit user direction. Test conventions are documented in `backend/.specs/docs/automated-tests.md`.
+- Merchant activation state already exists in the model (see `.specs/scratch/merchant-lifecycle/spec.md`). It is not enforced anywhere yet: connect must reject issuance for an inactive merchant when it is implemented, and must not change the token contract to do so.
+- Glossary (`.specs/GLOSSARY.md`) and ADRs (`.specs/adr/`) are maintained; ADR-0003 records the merchant activation gate that connect must enforce. Test conventions are documented in `backend/.specs/docs/automated-tests.md`.

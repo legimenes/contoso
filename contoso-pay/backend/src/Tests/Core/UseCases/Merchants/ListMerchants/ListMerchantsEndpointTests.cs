@@ -43,6 +43,10 @@ public sealed class ListMerchantsEndpointTests(TestingWebApplicationFactory fact
             Assert.Equal($"{prefix} branco", items[1].GetProperty("name").GetString());
             Assert.Equal($"{prefix} CINZA", items[2].GetProperty("name").GetString());
             Assert.False(items[0].TryGetProperty("createdAtUtc", out _));
+            foreach (JsonElement item in items.EnumerateArray())
+            {
+                Assert.True(item.GetProperty("isActive").GetBoolean());
+            }
         }
         finally
         {

@@ -32,7 +32,7 @@ public sealed class MerchantQueries(ContosoPayDbContext dbContext) : IMerchantQu
             .ThenBy(merchant => merchant.Id)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(merchant => new ListMerchantsResponse(merchant.Id, merchant.Name, merchant.Document))
+            .Select(merchant => new ListMerchantsResponse(merchant.Id, merchant.Name, merchant.Document, merchant.IsActive))
             .ToListAsync(cancellationToken);
 
         return new PagedResponse<ListMerchantsResponse>(request.Page, request.PageSize, totalItems, totalPages, merchants);

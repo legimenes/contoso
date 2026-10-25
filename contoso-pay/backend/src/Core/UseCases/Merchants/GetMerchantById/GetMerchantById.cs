@@ -14,6 +14,6 @@ public sealed class GetMerchantById(IMerchantRepository repository) : IGetMercha
             return Result.Failure<GetMerchantByIdResponse>(Error.New(Resource.Validation_Merchant_NotFound), ResultType.NotFound);
         }
 
-        return Result.Success<GetMerchantByIdResponse>(new GetMerchantByIdResponse(merchant.Id, merchant.Name, merchant.Document), ResultType.Ok);
+        return Result.Success<GetMerchantByIdResponse>(new GetMerchantByIdResponse(merchant.Id, merchant.Name, merchant.Document, merchant.IsActive), ResultType.Ok);
     }
 }

@@ -26,6 +26,76 @@ public sealed class MerchantTests
 
     [Fact]
     [Trait("Merchant", "Merchant (Domain)")]
+    public void New_WhenMerchantIsCreated_ShouldStartActive()
+    {
+        // Given
+        MerchantBuilder builder = new MerchantBuilder();
+
+        // When
+        Merchant merchant = builder.Build();
+
+        // Then
+        Assert.True(merchant.IsActive);
+    }
+
+    [Fact]
+    [Trait("Merchant", "Merchant (Domain)")]
+    public void Deactivate_WhenActive_ShouldBecomeInactive()
+    {
+        // Given
+        Merchant merchant = new MerchantBuilder().Build();
+
+        // When
+        merchant.Deactivate();
+
+        // Then
+        Assert.False(merchant.IsActive);
+    }
+
+    [Fact]
+    [Trait("Merchant", "Merchant (Domain)")]
+    public void Activate_WhenInactive_ShouldBecomeActive()
+    {
+        // Given
+        Merchant merchant = new MerchantBuilder().Inactive().Build();
+
+        // When
+        merchant.Activate();
+
+        // Then
+        Assert.True(merchant.IsActive);
+    }
+
+    [Fact]
+    [Trait("Merchant", "Merchant (Domain)")]
+    public void Deactivate_WhenAlreadyInactive_ShouldRemainInactive()
+    {
+        // Given
+        Merchant merchant = new MerchantBuilder().Inactive().Build();
+
+        // When
+        merchant.Deactivate();
+
+        // Then
+        Assert.False(merchant.IsActive);
+    }
+
+    [Fact]
+    [Trait("Merchant", "Merchant (Domain)")]
+    public void Activate_WhenAlreadyActive_ShouldRemainActive()
+    {
+        // Given
+        Merchant merchant = new MerchantBuilder().Build();
+
+        // When
+        merchant.Activate();
+
+        // Then
+        Assert.True(merchant.IsActive);
+    }
+
+    [Fact]
+    [Trait("Merchant", "Merchant (Domain)")]
     public void New_WithValidData_ShouldTrimAndAssignIdentity()
     {
         // Given
