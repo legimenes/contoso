@@ -14,6 +14,7 @@ public sealed class MerchantConfiguration : IEntityTypeConfiguration<Merchant>
         builder.Property(merchant => merchant.Name).HasColumnName("name").IsRequired().HasMaxLength(100);
         builder.Property(merchant => merchant.Document).HasColumnName("document").IsRequired().HasMaxLength(14);
         builder.HasIndex(merchant => merchant.Document).IsUnique();
+        builder.Property(merchant => merchant.IsActive).HasColumnName("is_active").IsRequired();
         builder.Property(merchant => merchant.CreatedAtUtc).HasColumnName("created_at").IsRequired();
     }
 }

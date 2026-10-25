@@ -1,4 +1,6 @@
-﻿using Core.UseCases.Merchants.CreateMerchant;
+﻿using Core.UseCases.Merchants.ActivateMerchant;
+using Core.UseCases.Merchants.CreateMerchant;
+using Core.UseCases.Merchants.DeactivateMerchant;
 using Core.UseCases.Merchants.GetMerchantById;
 using Core.UseCases.Merchants.ListMerchants;
 using FluentValidation;
@@ -13,6 +15,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICreateMerchant, CreateMerchant>();
         services.AddScoped<IValidator<CreateMerchantRequest>, CreateMerchantRequestValidator>();
         services.AddScoped<IGetMerchantById, GetMerchantById>();
+        services.AddScoped<IDeactivateMerchant, DeactivateMerchant>();
+        services.AddScoped<IActivateMerchant, ActivateMerchant>();
         services.AddScoped<IListMerchants, ListMerchants>();
         services.AddScoped<IValidator<ListMerchantsRequest>, ListMerchantsRequestValidator>();
         return services;
