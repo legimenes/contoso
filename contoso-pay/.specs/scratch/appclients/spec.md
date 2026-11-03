@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: superseded
+
+Superseded by: `.specs/scratch/openiddict/spec.md` (2026-10-27). This spec described an `AppClient` business aggregate with `is_active`, `created_at`, a 1-N merchant relationship, and a hand-rolled token flow. The replacement uses OpenIddict, a 1:1 relationship, no app-client active flag, and secret rotation.
 
 ## Problem Statement
 

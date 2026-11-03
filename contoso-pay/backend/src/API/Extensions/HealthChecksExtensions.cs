@@ -1,5 +1,4 @@
-﻿using Adapters.Persistence;
-using API.Infrastructure;
+﻿using API.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using System.Text.Json;
@@ -8,11 +7,11 @@ namespace API.Extensions;
 
 internal static class HealthChecksExtensions
 {
-    internal static IServiceCollection AddHealthMonitoring(this IServiceCollection services, IConfiguration configuration)
+    internal static IServiceCollection AddHealthMonitoring(this IServiceCollection services, ConnectionStrings connectionStrings)
     {
         services.AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString(PostgresConnectionString.PostgresConnection)!, name: "PostgreSQL")
-            .AddMongoDb(_ => new MongoClient(configuration.GetConnectionString(MongoDBConnectionString.MongoDbConnection)!), name: "MongoDbLogs");
+            .AddNpgSql(connectionStrings.Postgres, name: "PostgreSQL")
+            .AddMongoDb(_ => new MongoClient(connectionStrings.MongoDb), name: "MongoDb");
         return services;
     }
 

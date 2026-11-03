@@ -4,6 +4,7 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
+  <Project Path="src/Adapters.Identity/Adapters.Identity.csproj" Id="0f7c2a4e-5f8b-4c1d-9a3e-6b2d8c4f1a70" />
   <Project Path="src/Adapters.Persistence/Adapters.Persistence.csproj" Id="baad0b87-9291-4314-aaaa-67cc100c292c" />
   <Project Path="src/API/API.csproj" Id="f449ac26-987f-411b-a681-bfe1b220b8ab" />
   <Project Path="src/Core/Core.csproj" Id="87c6c5d2-fb57-4ab4-ac09-e4c96e050829" />

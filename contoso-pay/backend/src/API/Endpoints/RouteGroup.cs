@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Asp.Versioning.Builder;
 
 namespace API.Endpoints;
 
@@ -21,6 +22,12 @@ internal static class RouteGroup
             group.HasApiVersion(version);
         }
 
+        return group;
+    }
+
+    internal static IVersionedEndpointRouteBuilder MapUnversionedGroup(this IEndpointRouteBuilder app)
+    {
+        IVersionedEndpointRouteBuilder group = app.NewVersionedApi().HasApiVersion(new ApiVersion(1, 0));
         return group;
     }
 }

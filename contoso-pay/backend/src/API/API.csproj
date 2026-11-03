@@ -27,6 +27,7 @@
     <PackageReference Include="Serilog.Sinks.MongoDB" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Adapters.Identity\Adapters.Identity.csproj" />
     <ProjectReference Include="..\Adapters.Persistence\Adapters.Persistence.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>

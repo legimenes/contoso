@@ -32,6 +32,7 @@ internal abstract class EndpointBase
         return result.Type switch
         {
             ResultType.BadRequest => CreateProblemDetails(StatusCodes.Status400BadRequest, result.Errors),
+            ResultType.Unauthorized => CreateProblemDetails(StatusCodes.Status401Unauthorized, result.Errors),
             ResultType.NotFound => CreateProblemDetails(StatusCodes.Status404NotFound, result.Errors),
             ResultType.Conflict => CreateProblemDetails(StatusCodes.Status409Conflict, result.Errors),
             ResultType.UnprocessableContent => CreateProblemDetails(StatusCodes.Status422UnprocessableEntity, result.Errors),
@@ -70,6 +71,7 @@ internal abstract class EndpointBase
         return statusCode switch
         {
             StatusCodes.Status400BadRequest => HttpStatusCode.BadRequest.ToString(),
+            StatusCodes.Status401Unauthorized => HttpStatusCode.Unauthorized.ToString(),
             StatusCodes.Status404NotFound => HttpStatusCode.NotFound.ToString(),
             StatusCodes.Status409Conflict => HttpStatusCode.Conflict.ToString(),
             StatusCodes.Status422UnprocessableEntity => HttpStatusCode.UnprocessableEntity.ToString(),

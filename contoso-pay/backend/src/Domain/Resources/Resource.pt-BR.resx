@@ -120,6 +120,12 @@
   <data name="Exception_DefaultMessage" xml:space="preserve">
     <value>Ocorreu um erro inesperado.</value>
   </data>
+  <data name="Validation_AppClient_AlreadyExists" xml:space="preserve">
+    <value>Merchant já possui um AppClient.</value>
+  </data>
+  <data name="Validation_AppClient_InactiveMerchant" xml:space="preserve">
+    <value>Merchant está desativado</value>
+  </data>
   <data name="Validation_Document_AlreadyExists" xml:space="preserve">
     <value>Documento já existe.</value>
   </data>
@@ -130,7 +136,7 @@
     <value>Documento é obrigatório.</value>
   </data>
   <data name="Validation_Merchant_NotFound" xml:space="preserve">
-    <value>Merchant n&#xE3;o encontrado.</value>
+    <value>Merchant não encontrado.</value>
   </data>
   <data name="Validation_Name_MaxLength" xml:space="preserve">
     <value>Nome deve ter no máximo {0} caracteres.</value>
@@ -139,9 +145,18 @@
     <value>Nome é obrigatório.</value>
   </data>
   <data name="Validation_PageSize_Range" xml:space="preserve">
-    <value>Tamanho de p&#xE1;gina deve estar entre {0} e {1}.</value>
+    <value>Tamanho de página deve estar entre {0} e {1}.</value>
   </data>
   <data name="Validation_Page_Minimum" xml:space="preserve">
-    <value>P&#xE1;gina deve ser no m&#xED;nimo {0}.</value>
+    <value>Página deve ser no mínimo {0}.</value>
+  </data>
+  <data name="Validation_Token_InvalidClient" xml:space="preserve">
+    <value>Credenciais de cliente inválidas.</value>
+  </data>
+  <data name="Validation_Token_InvalidRequest" xml:space="preserve">
+    <value>O token solicitado é inválido.</value>
+  </data>
+  <data name="Validation_Token_UnsupportedGrantType" xml:space="preserve">
+    <value>O grant type especificado não é suportado.</value>
   </data>
 </root>
