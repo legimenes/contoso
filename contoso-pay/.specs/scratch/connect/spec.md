@@ -1,4 +1,6 @@
-Status: ready-for-agent
+Status: superseded
+
+Superseded by: `.specs/scratch/openiddict/spec.md` (2026-10-27). This spec described a JSON token endpoint and a hand-rolled JWT/secret-validation flow. The replacement uses OpenIddict, `application/x-www-form-urlencoded` at `/connect/token`, HS256, and an opaque app-client credential.
 
 ## Problem Statement
 

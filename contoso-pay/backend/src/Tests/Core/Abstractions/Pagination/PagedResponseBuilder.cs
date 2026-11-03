@@ -1,6 +1,6 @@
 using Core.Abstractions.Pagination;
 
-namespace Tests.Core.Abstractions;
+namespace Tests.Core.Abstractions.Pagination;
 
 public sealed class PagedResponseBuilder<T>
 {

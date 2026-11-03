@@ -5,7 +5,7 @@ using Domain.Core.Extensions;
 using Domain.Core.Results;
 using Domain.Resources;
 using NSubstitute;
-using Tests.Core.Abstractions;
+using Tests.Core.Abstractions.Pagination;
 using UseCase = Core.UseCases.Merchants.ListMerchants;
 
 namespace Tests.Core.UseCases.Merchants.ListMerchants;

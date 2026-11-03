@@ -17,6 +17,7 @@ The solution is divided into the following logical projects, following a strict 
 - **`Domain`**: The heart of the software. It contains the entities and domain rules inherent to the business. It also contains common classes, value objects and types that need to be shared exclusively between the `Domain` and `Core` layers (e.g., result types, standardized domain exceptions, and base interfaces). **It has no dependencies on infrastructure or any other project in the solution**.
 - **`Core`**: The orchestration layer. It contains the application's use-cases and domain services. This is where the application flow is orchestrated. It depends on `Domain` and `SharedKernel`.
 - **`Adapters.Persistence`**: The concrete implementation of data access. It contains repositories, ORM configurations (such as Entity Framework Core), and database migrations. It acts as an **outbound Adapter**.
+- **`Adapters.Identity`**: The concrete implementation of OAuth 2.0 identity. It owns OpenIddict, its EF Core entities and `IdentityDbContext`, and the credential/token ports. It acts as an **outbound Adapter**.
 - **`Tests`**: Automated testing setup covering both unit and integration tests.
 
 ## Architectural Patterns and Characteristics
@@ -34,7 +35,7 @@ The `Core` layer is organized by **business capabilities** (Screaming Architectu
 The application was designed to be agnostic to external resources (vendors).
 
 - **Ports**: Interfaces that define contracts (e.g., **IConnectService**, **IAppClientRepository**) must reside in **Core**.
-- **Adapters**: Implementations such as **Adapters.Persistence**.
+- **Adapters**: Implementations such as **Adapters.Persistence** and **Adapters.Identity**.
 - **Replaceability**: If we need to replace the identity provider or database in the future, only a new **Adapters.*** project needs to be created, with no changes required to **Core**.
 
 ## Project Architecture Guide

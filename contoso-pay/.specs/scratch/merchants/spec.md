@@ -1,5 +1,7 @@
 Status: ready-for-agent
 
+> Note (2026-10-27): the merchant endpoints remain public in the OpenIddict initiative (option A); the Bearer retrofit is recorded as debt in `.specs/scratch/openiddict/spec.md`. The `Merchant 1-N AppClients` relationship assumed below is superseded by the 1:1 model in the same spec and in `.specs/GLOSSARY.md`.
+
 ## Problem Statement
 
 As an integrator of a fictitious study payment gateway inspired by Cielo E-commerce, I need a minimal merchant registry so that every payment and credential can be scoped to a merchant, without building a full backoffice, KYC, or user management system.

@@ -120,6 +120,12 @@
   <data name="Exception_DefaultMessage" xml:space="preserve">
     <value>An unexpected error occurred.</value>
   </data>
+  <data name="Validation_AppClient_AlreadyExists" xml:space="preserve">
+    <value>Merchant already has an AppClient.</value>
+  </data>
+  <data name="Validation_AppClient_InactiveMerchant" xml:space="preserve">
+    <value>Merchant is inactive.</value>
+  </data>
   <data name="Validation_Document_AlreadyExists" xml:space="preserve">
     <value>Document already exists.</value>
   </data>
@@ -143,5 +149,14 @@
   </data>
   <data name="Validation_Page_Minimum" xml:space="preserve">
     <value>Page must be at least {0}.</value>
+  </data>
+  <data name="Validation_Token_InvalidClient" xml:space="preserve">
+    <value>Invalid client credentials.</value>
+  </data>
+  <data name="Validation_Token_InvalidRequest" xml:space="preserve">
+    <value>The token request is invalid.</value>
+  </data>
+  <data name="Validation_Token_UnsupportedGrantType" xml:space="preserve">
+    <value>The specified grant type is not supported.</value>
   </data>
 </root>

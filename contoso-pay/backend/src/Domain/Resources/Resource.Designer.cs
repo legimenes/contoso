@@ -70,6 +70,24 @@ namespace Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merchant already has an AppClient..
+        /// </summary>
+        public static string Validation_AppClient_AlreadyExists {
+            get {
+                return ResourceManager.GetString("Validation_AppClient_AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merchant is inactive..
+        /// </summary>
+        public static string Validation_AppClient_InactiveMerchant {
+            get {
+                return ResourceManager.GetString("Validation_AppClient_InactiveMerchant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document already exists..
         /// </summary>
         public static string Validation_Document_AlreadyExists {
@@ -124,6 +142,15 @@ namespace Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Page must be at least {0}..
+        /// </summary>
+        public static string Validation_Page_Minimum {
+            get {
+                return ResourceManager.GetString("Validation_Page_Minimum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Page size must be between {0} and {1}..
         /// </summary>
         public static string Validation_PageSize_Range {
@@ -133,11 +160,29 @@ namespace Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page must be at least {0}..
+        ///   Looks up a localized string similar to Invalid client credentials..
         /// </summary>
-        public static string Validation_Page_Minimum {
+        public static string Validation_Token_InvalidClient {
             get {
-                return ResourceManager.GetString("Validation_Page_Minimum", resourceCulture);
+                return ResourceManager.GetString("Validation_Token_InvalidClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The token request is invalid..
+        /// </summary>
+        public static string Validation_Token_InvalidRequest {
+            get {
+                return ResourceManager.GetString("Validation_Token_InvalidRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified grant type is not supported..
+        /// </summary>
+        public static string Validation_Token_UnsupportedGrantType {
+            get {
+                return ResourceManager.GetString("Validation_Token_UnsupportedGrantType", resourceCulture);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using API.Endpoints;
+using Asp.Versioning.Builder;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
@@ -21,10 +22,17 @@ internal static class EndpointExtensions
     internal static IApplicationBuilder MapEndpoints(this WebApplication app)
     {
         RouteGroupBuilder versionedGroup = RouteGroup.MapVersionedGroup(app);
+        IVersionedEndpointRouteBuilder unversionedGroup = RouteGroup.MapUnversionedGroup(app);
 
         IEnumerable<IEndpoint> endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
         foreach (IEndpoint endpoint in endpoints)
         {
+            if (endpoint is IUnversionedEndpoint)
+            {
+                endpoint.MapEndpoint(unversionedGroup);
+                continue;
+            }
+
             endpoint.MapEndpoint(versionedGroup);
         }
         return app;
