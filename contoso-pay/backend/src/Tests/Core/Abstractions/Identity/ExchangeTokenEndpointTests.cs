@@ -1,4 +1,4 @@
-using Adapters.Identity.AppClients;
+using Core.Abstractions.Identity;
 using Core.UseCases.Merchants;
 using Domain;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -272,17 +272,22 @@ public sealed class ExchangeTokenEndpointTests(TestingWebApplicationFactory fact
         using IServiceScope scope = factory.Services.CreateScope();
         IMerchantRepository repository = scope.ServiceProvider.GetRequiredService<IMerchantRepository>();
         Merchant merchant = isActive
-            ? new MerchantBuilder().Build()
-            : new MerchantBuilder().Inactive().Build();
+            ? new MerchantBuilder().WithDocument(NewDocument()).Build()
+            : new MerchantBuilder().WithDocument(NewDocument()).Inactive().Build();
         await repository.AddAsync(merchant, CancellationToken.None);
         return merchant.Id;
+    }
+
+    private static string NewDocument()
+    {
+        return Random.Shared.NextInt64(10_000_000_000L, 100_000_000_000_000L).ToString();
     }
 
     private async Task<CreatedAppClientCredential> CreateAppClientAsync(Guid merchantId)
     {
         using IServiceScope scope = factory.Services.CreateScope();
-        IAppClientCredentials credentials = scope.ServiceProvider.GetRequiredService<IAppClientCredentials>();
-        return await credentials.CreateAsync(merchantId, "Loja Exemplo", CancellationToken.None);
+        IAppClientProvider appClients = scope.ServiceProvider.GetRequiredService<IAppClientProvider>();
+        return await appClients.CreateAsync(merchantId, "Loja Exemplo", CancellationToken.None);
     }
 
     private async Task<HttpResponseMessage> PostTokenAsync(

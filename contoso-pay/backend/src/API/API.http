@@ -1,4 +1,5 @@
 @API_HostAddress = http://localhost:5059
+@API_HostAddressHttps = https://localhost:7088
 
 # @name createMerchant
 POST {{API_HostAddress}}/v1/merchants
@@ -30,5 +31,56 @@ Accept: application/json
 # Requires the createMerchant request above to have run.
 POST {{API_HostAddress}}/v1/merchants/{{createMerchant.response.body.$.id}}/activate
 Accept: application/json
+
+###
+
+# Requires the createMerchant request above to have run.
+# @name createAppClient
+POST {{API_HostAddress}}/v1/appclients
+Content-Type: application/json
+
+{
+  "merchantId": "{{createMerchant.response.body.$.id}}",
+  "name": "Integrador Exemplo"
+}
+
+###
+
+# Requires the createAppClient request above to have run.
+# The token endpoint only accepts HTTPS, so this host points to the https profile port.
+# @name exchangeToken
+POST {{API_HostAddressHttps}}/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{createAppClient.response.body.$.clientId}}&client_secret={{createAppClient.response.body.$.clientSecret}}
+
+###
+
+# Requires the createAppClient and exchangeToken requests above to have run.
+GET {{API_HostAddress}}/v1/appclients/{{createAppClient.response.body.$.clientId}}
+Authorization: Bearer {{exchangeToken.response.body.$.access_token}}
+Accept: application/json
+
+###
+
+# Requires the createAppClient and exchangeToken requests above to have run.
+# The rotation invalidates the secret returned by createAppClient immediately.
+# @name rotateAppClientSecret
+POST {{API_HostAddress}}/v1/appclients/{{createAppClient.response.body.$.clientId}}/rotate-secret
+Content-Type: application/json
+Authorization: Bearer {{exchangeToken.response.body.$.access_token}}
+
+{
+  "currentSecret": "{{createAppClient.response.body.$.clientSecret}}"
+}
+
+###
+
+# Re-run after rotateAppClientSecret to prove the cycle: the current secret gets a token,
+# while the previous one answers 401 invalid_client.
+POST {{API_HostAddressHttps}}/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{createAppClient.response.body.$.clientId}}&client_secret={{rotateAppClientSecret.response.body.$.clientSecret}}
 
 ###

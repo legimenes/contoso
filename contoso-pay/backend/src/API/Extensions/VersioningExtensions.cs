@@ -18,7 +18,11 @@ internal static class VersioningExtensions
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         })
-        .AddOpenApi();
+        .AddOpenApi(options =>
+        {
+            options.Document.AddDocumentTransformer(new BearerSecuritySchemeDocumentTransformer());
+            options.Document.AddOperationTransformer(new BearerSecurityOperationTransformer());
+        });
 
         return services;
     }

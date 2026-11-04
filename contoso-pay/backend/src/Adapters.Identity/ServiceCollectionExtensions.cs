@@ -1,7 +1,7 @@
-using Adapters.Identity.AppClients;
 using Adapters.Identity.Models;
-using Adapters.Identity.Repositories;
+using Adapters.Identity.Queries;
 using Core.Abstractions.Identity;
+using Core.UseCases.AppClients.GetAppClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -69,7 +69,8 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         services.AddScoped<AppClientManager>();
-        services.AddScoped<IAppClientCredentials, AppClientRepository>();
+        services.AddScoped<IAppClientProvider, AppClientProvider>();
+        services.AddScoped<IAppClientQueries, AppClientQueries>();
         services.AddScoped<IExchangeToken, ExchangeToken>();
         return services;
     }

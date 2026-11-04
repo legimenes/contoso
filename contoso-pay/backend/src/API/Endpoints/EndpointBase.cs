@@ -1,11 +1,21 @@
 ﻿using Domain.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace API.Endpoints;
 
 internal abstract class EndpointBase
 {
+    private const string MerchantIdClaim = "merchant_id";
+
+    internal static bool TryGetMerchantId(ClaimsPrincipal principal, out Guid merchantId)
+    {
+        merchantId = Guid.Empty;
+        string? value = principal.FindFirst(MerchantIdClaim)?.Value;
+        return Guid.TryParse(value, out merchantId) && merchantId != Guid.Empty;
+    }
+
     internal static IResult CreateResult(Result result)
     {
         return result.Type switch

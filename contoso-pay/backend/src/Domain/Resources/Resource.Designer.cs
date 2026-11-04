@@ -70,7 +70,7 @@ namespace Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Merchant already has an AppClient..
+        ///   Looks up a localized string similar to The merchant already has an app client..
         /// </summary>
         public static string Validation_AppClient_AlreadyExists {
             get {
@@ -79,11 +79,38 @@ namespace Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Merchant is inactive..
+        ///   Looks up a localized string similar to The provided current secret does not match..
         /// </summary>
-        public static string Validation_AppClient_InactiveMerchant {
+        public static string Validation_AppClient_CurrentSecret_Invalid {
             get {
-                return ResourceManager.GetString("Validation_AppClient_InactiveMerchant", resourceCulture);
+                return ResourceManager.GetString("Validation_AppClient_CurrentSecret_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current secret is required..
+        /// </summary>
+        public static string Validation_AppClient_CurrentSecret_Required {
+            get {
+                return ResourceManager.GetString("Validation_AppClient_CurrentSecret_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App client not found..
+        /// </summary>
+        public static string Validation_AppClient_NotFound {
+            get {
+                return ResourceManager.GetString("Validation_AppClient_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Client id is required..
+        /// </summary>
+        public static string Validation_ClientId_Required {
+            get {
+                return ResourceManager.GetString("Validation_ClientId_Required", resourceCulture);
             }
         }
         
@@ -115,11 +142,29 @@ namespace Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The merchant is inactive and cannot obtain an app client..
+        /// </summary>
+        public static string Validation_Merchant_Inactive {
+            get {
+                return ResourceManager.GetString("Validation_Merchant_Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Merchant not found..
         /// </summary>
         public static string Validation_Merchant_NotFound {
             get {
                 return ResourceManager.GetString("Validation_Merchant_NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merchant id is required..
+        /// </summary>
+        public static string Validation_MerchantId_Required {
+            get {
+                return ResourceManager.GetString("Validation_MerchantId_Required", resourceCulture);
             }
         }
         

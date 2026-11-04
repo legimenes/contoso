@@ -1,4 +1,4 @@
-namespace Adapters.Identity.AppClients;
+namespace Core.Abstractions.Identity;
 
 public sealed record CreatedAppClientCredential(
     string ClientId,
