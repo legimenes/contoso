@@ -1,6 +1,6 @@
-namespace Adapters.Identity.AppClients;
+﻿namespace Core.Abstractions.Identity;
 
-public interface IAppClientCredentials
+public interface IAppClientProvider
 {
     Task<bool> ExistsByMerchantIdAsync(Guid merchantId, CancellationToken cancellationToken);
     Task<CreatedAppClientCredential> CreateAsync(Guid merchantId, string displayName, CancellationToken cancellationToken);

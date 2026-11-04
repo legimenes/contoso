@@ -1,5 +1,5 @@
 using Adapters.Identity;
-using Adapters.Identity.AppClients;
+using Core.Abstractions.Identity;
 using Core.UseCases.Merchants;
 using Domain;
 using Domain.Core.Results;
@@ -19,7 +19,7 @@ public sealed class ExchangeTokenTests
         // Given
         Merchant merchant = new Tests.Domain.MerchantBuilder().Build();
         AppClientCredential credential = new AppClientCredentialBuilder().WithMerchantId(merchant.Id).Build();
-        IAppClientCredentials credentials = Substitute.For<IAppClientCredentials>();
+        IAppClientProvider credentials = Substitute.For<IAppClientProvider>();
         IMerchantRepository merchants = Substitute.For<IMerchantRepository>();
         credentials.FindByClientIdAsync(credential.ClientId, Arg.Any<CancellationToken>()).Returns(credential);
         credentials.ValidateSecretAsync(credential.ClientId, ClientSecret, Arg.Any<CancellationToken>()).Returns(true);
@@ -42,7 +42,7 @@ public sealed class ExchangeTokenTests
     public async Task GivenUnknownClient_WhenExchangingToken_ShouldReturnUnauthorized()
     {
         // Given
-        IAppClientCredentials credentials = Substitute.For<IAppClientCredentials>();
+        IAppClientProvider credentials = Substitute.For<IAppClientProvider>();
         IMerchantRepository merchants = Substitute.For<IMerchantRepository>();
         credentials.FindByClientIdAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns((AppClientCredential?)null);
         ExchangeToken exchangeToken = new(credentials, merchants);
@@ -62,7 +62,7 @@ public sealed class ExchangeTokenTests
     {
         // Given
         AppClientCredential credential = new AppClientCredentialBuilder().Build();
-        IAppClientCredentials credentials = Substitute.For<IAppClientCredentials>();
+        IAppClientProvider credentials = Substitute.For<IAppClientProvider>();
         IMerchantRepository merchants = Substitute.For<IMerchantRepository>();
         credentials.FindByClientIdAsync(credential.ClientId, Arg.Any<CancellationToken>()).Returns(credential);
         credentials.ValidateSecretAsync(credential.ClientId, ClientSecret, Arg.Any<CancellationToken>()).Returns(false);
@@ -83,7 +83,7 @@ public sealed class ExchangeTokenTests
     {
         // Given
         AppClientCredential credential = new AppClientCredentialBuilder().Build();
-        IAppClientCredentials credentials = Substitute.For<IAppClientCredentials>();
+        IAppClientProvider credentials = Substitute.For<IAppClientProvider>();
         IMerchantRepository merchants = Substitute.For<IMerchantRepository>();
         credentials.FindByClientIdAsync(credential.ClientId, Arg.Any<CancellationToken>()).Returns(credential);
         credentials.ValidateSecretAsync(credential.ClientId, ClientSecret, Arg.Any<CancellationToken>()).Returns(true);
@@ -105,7 +105,7 @@ public sealed class ExchangeTokenTests
         // Given
         Merchant merchant = new Tests.Domain.MerchantBuilder().Inactive().Build();
         AppClientCredential credential = new AppClientCredentialBuilder().WithMerchantId(merchant.Id).Build();
-        IAppClientCredentials credentials = Substitute.For<IAppClientCredentials>();
+        IAppClientProvider credentials = Substitute.For<IAppClientProvider>();
         IMerchantRepository merchants = Substitute.For<IMerchantRepository>();
         credentials.FindByClientIdAsync(credential.ClientId, Arg.Any<CancellationToken>()).Returns(credential);
         credentials.ValidateSecretAsync(credential.ClientId, ClientSecret, Arg.Any<CancellationToken>()).Returns(true);

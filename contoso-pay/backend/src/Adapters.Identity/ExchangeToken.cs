@@ -1,4 +1,3 @@
-using Adapters.Identity.AppClients;
 using Core.Abstractions.Identity;
 using Core.UseCases.Merchants;
 using Domain;
@@ -10,18 +9,18 @@ using System.Security.Claims;
 namespace Adapters.Identity;
 
 public sealed class ExchangeToken(
-    IAppClientCredentials credentials,
+    IAppClientProvider appClients,
     IMerchantRepository merchants) : IExchangeToken
 {
     public async Task<Result<ClaimsPrincipal>> ExchangeAsync(string clientId, string clientSecret, CancellationToken cancellationToken)
     {
-        AppClientCredential? appClient = await credentials.FindByClientIdAsync(clientId, cancellationToken);
+        AppClientCredential? appClient = await appClients.FindByClientIdAsync(clientId, cancellationToken);
         if (appClient is null)
         {
             return Unauthorized();
         }
 
-        bool secretIsValid = await credentials.ValidateSecretAsync(clientId, clientSecret, cancellationToken);
+        bool secretIsValid = await appClients.ValidateSecretAsync(clientId, clientSecret, cancellationToken);
         if (!secretIsValid)
         {
             return Unauthorized();

@@ -1,5 +1,6 @@
 using Adapters.Identity.AppClients;
 using Adapters.Identity.Models;
+using Core.Abstractions.Identity;
 using Domain.Core.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -7,11 +8,11 @@ using OpenIddict.Abstractions;
 using System.Buffers.Text;
 using System.Security.Cryptography;
 
-namespace Adapters.Identity.Repositories;
+namespace Adapters.Identity;
 
-public sealed class AppClientRepository(
+public sealed class AppClientProvider(
     AppClientManager manager,
-    IdentityDbContext dbContext) : IAppClientCredentials
+    IdentityDbContext dbContext) : IAppClientProvider
 {
     private const int SecretLengthInBytes = 32;
 

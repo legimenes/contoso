@@ -121,10 +121,19 @@
     <value>Ocorreu um erro inesperado.</value>
   </data>
   <data name="Validation_AppClient_AlreadyExists" xml:space="preserve">
-    <value>Merchant já possui um AppClient.</value>
+    <value>O merchant já possui um app client.</value>
   </data>
-  <data name="Validation_AppClient_InactiveMerchant" xml:space="preserve">
-    <value>Merchant está desativado</value>
+  <data name="Validation_AppClient_CurrentSecret_Invalid" xml:space="preserve">
+    <value>O client secret atual informado não corresponde.</value>
+  </data>
+  <data name="Validation_AppClient_CurrentSecret_Required" xml:space="preserve">
+    <value>O client secret atual é obrigatório.</value>
+  </data>
+  <data name="Validation_AppClient_NotFound" xml:space="preserve">
+    <value>App client não encontrado.</value>
+  </data>
+  <data name="Validation_ClientId_Required" xml:space="preserve">
+    <value>Client id é obrigatório.</value>
   </data>
   <data name="Validation_Document_AlreadyExists" xml:space="preserve">
     <value>Documento já existe.</value>
@@ -135,8 +144,14 @@
   <data name="Validation_Document_Required" xml:space="preserve">
     <value>Documento é obrigatório.</value>
   </data>
+  <data name="Validation_Merchant_Inactive" xml:space="preserve">
+    <value>Merchant inativo não pode obter um app client.</value>
+  </data>
   <data name="Validation_Merchant_NotFound" xml:space="preserve">
     <value>Merchant não encontrado.</value>
+  </data>
+  <data name="Validation_MerchantId_Required" xml:space="preserve">
+    <value>Merchant id é obrigatório.</value>
   </data>
   <data name="Validation_Name_MaxLength" xml:space="preserve">
     <value>Nome deve ter no máximo {0} caracteres.</value>

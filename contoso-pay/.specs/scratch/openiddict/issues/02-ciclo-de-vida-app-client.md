@@ -4,24 +4,32 @@
 
 **Blocked by:** 01: Fundação de identidade com OpenIddict e emissão de token.
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] `POST /v1/appclients` público com `{merchantId, name}` válido retorna `201 {clientId, clientSecret}` e persiste exatamente um app client para o merchant
-- [ ] Merchant inexistente retorna `404`; merchant inativo retorna `409`; merchant que já tem app client retorna `409`; corpo inválido retorna `400`; todos no envelope padrão de problema
-- [ ] `GET /v1/appclients/{clientId}` exige Bearer, devolve `200 {clientId, merchantId, name}` sem qualquer campo de secret e retorna `401` sem token válido
-- [ ] `GET` de client desconhecido ou de outro merchant retorna `404`, sem revelar a existência do client alheio
-- [ ] `POST /v1/appclients/{clientId}/rotate-secret` com Bearer e `{currentSecret}` correto devolve `200 {clientId, clientSecret}`, mantém o `client_id` e invalida o secret anterior imediatamente
-- [ ] Rotação com secret atual errado retorna `401` no envelope padrão; client desconhecido ou de outro merchant retorna `404`
-- [ ] O secret em texto puro só aparece na resposta de criação e na de rotação; `GET` nunca o devolve e o banco guarda apenas o hash; nenhuma resposta ou log ecoa o secret recebido
-- [ ] A regra 1:1 é garantida pelo índice único de `merchant_id`, pela checagem de existência no use case e pelo mapeamento de unique violation para `409` como rede de segurança da corrida
-- [ ] Um token emitido antes da rotação ou da desativação do merchant continua válido até expirar, porque a validação não consulta o banco; isso é comportamento documentado, não bug
-- [ ] Os três endpoints entram na referência Scalar da v1 com exemplos executáveis em `API.http`; o `GET` e a rotação documentam o requisito de Bearer
-- [ ] Testes unitários cobrem a matriz de criação (merchant ausente/inativo, client já existente, nome inválido, sucesso), leitura (sucesso, desconhecido, merchant estrangeiro) e rotação (sucesso, desconhecido/estrangeiro, secret errado, secret ausente)
-- [ ] Testes de integração contra Postgres real cobrem `201` + `GET` sem secret, `409` de duplicata, `404` de merchant, `409` de merchant inativo, `401` sem Bearer, `200`/`401`/`404` da rotação e o ciclo em que o secret novo obtém token e o antigo falha
-- [ ] As specs antigas `.specs/scratch/appclients/spec.md` e `.specs/scratch/connect/spec.md` ficam marcadas como superseded; glossário e ADRs refletem o modelo 1:1 e a rotação
-- [ ] Build sem warnings e suíte completa verde
+- [x] `POST /v1/appclients` público com `{merchantId, name}` válido retorna `201 {clientId, clientSecret}` e persiste exatamente um app client para o merchant
+- [x] Merchant inexistente retorna `404`; merchant inativo retorna `409`; merchant que já tem app client retorna `409`; corpo inválido retorna `400`; todos no envelope padrão de problema
+- [x] `GET /v1/appclients/{clientId}` exige Bearer, devolve `200 {clientId, merchantId, name}` sem qualquer campo de secret e retorna `401` sem token válido
+- [x] `GET` de client desconhecido ou de outro merchant retorna `404`, sem revelar a existência do client alheio
+- [x] `POST /v1/appclients/{clientId}/rotate-secret` com Bearer e `{currentSecret}` correto devolve `200 {clientId, clientSecret}`, mantém o `client_id` e invalida o secret anterior imediatamente
+- [x] Rotação com secret atual errado retorna `401` no envelope padrão; client desconhecido ou de outro merchant retorna `404`
+- [x] O secret em texto puro só aparece na resposta de criação e na de rotação; `GET` nunca o devolve e o banco guarda apenas o hash; nenhuma resposta ou log ecoa o secret recebido
+- [x] A regra 1:1 é garantida pelo índice único de `merchant_id`, pela checagem de existência no use case e pelo mapeamento de unique violation para `409` como rede de segurança da corrida
+- [x] Um token emitido antes da rotação ou da desativação do merchant continua válido até expirar, porque a validação não consulta o banco; isso é comportamento documentado, não bug
+- [x] Os três endpoints entram na referência Scalar da v1 com exemplos executáveis em `API.http`; o `GET` e a rotação documentam o requisito de Bearer
+- [x] Testes unitários cobrem a matriz de criação (merchant ausente/inativo, client já existente, nome inválido, sucesso), leitura (sucesso, desconhecido, merchant estrangeiro) e rotação (sucesso, desconhecido/estrangeiro, secret errado, secret ausente)
+- [x] Testes de integração contra Postgres real cobrem `201` + `GET` sem secret, `409` de duplicata, `404` de merchant, `409` de merchant inativo, `401` sem Bearer, `200`/`401`/`404` da rotação e o ciclo em que o secret novo obtém token e o antigo falha
+- [x] As specs antigas `.specs/scratch/appclients/spec.md` e `.specs/scratch/connect/spec.md` ficam marcadas como superseded; glossário e ADRs refletem o modelo 1:1 e a rotação
+- [x] Build sem warnings e suíte completa verde
 
-## Technical plan (pending approval)
+## Comments
+
+- Implementado: três slices (`CreateAppClient`, `GetAppClient`, `RotateAppClientSecret`), o `EndpointBase.TryGetMerchantId` (claim `merchant_id` ausente/inválida → `401`), três endpoints em `API/Endpoints/v1/AppClients/` (criação pública; leitura e rotação com `RequireAuthorization()`) e o cadeado de Bearer no `v1.json` via `OpenApiAuthorizationExtensions` (`BearerSecuritySchemeDocumentTransformer` + `BearerSecurityOperationTransformer`, apenas em Development). Verificado: build 0 warnings, 93 testes verdes (20 unitários e 12 de integração dos três slices, mais o restante da suíte).
+- Refatoração de portas aprovada no plano: em vez do `IAppClientCredentials` em `Adapters.Identity/AppClients/`, ficou uma única porta `IAppClientProvider` em `Core/Abstractions/Identity/` (namespace `Core.Abstractions.Identity`), que unifica escrita (criar/rotacionar), leitura de entidade e validação de secret, com os registros `AppClientCredential` e `CreatedAppClientCredential` movidos para o Core. A porta de leitura de projeção `IAppClientQueries` vive em `Core/UseCases/AppClients/GetAppClient/`. No adapter, `AppClientRepository` passou a `AppClientProvider` na raiz de `Adapters.Identity` (namespace `Adapters.Identity`) e o folder `Repositories/` foi apagado.
+- `Resource.resx`: 7 chaves novas (`Validation_AppClient_AlreadyExists`, `AppClient_CurrentSecret_Invalid`, `AppClient_CurrentSecret_Required`, `AppClient_NotFound`, `ClientId_Required`, `Merchant_Inactive`, `MerchantId_Required`) em inglês e pt-BR; duas chaves legadas e ultrapassadas do ticket 01 (`Validation_AppClient_InactiveMerchant` e uma duplicata de `Validation_AppClient_AlreadyExists`) foram removidas.
+- Os `ExchangeTokenEndpointTests` (ticket 01) passaram a usar documentos de merchant aleatórios (`NewDocument()`): testes em paralelo colidiam no documento fixo `12345678000190`; a linha remanescente no banco foi limpa com `docker exec contosopay_postgres psql -U appuser -d contoso` (o nome do banco é `contoso`).
+- `API.http` ganha o fluxo encadeado `createAppClient` → `exchangeToken` → `getAppClient` → `rotateAppClientSecret` → re-emissão de token com o secret novo. Como o OpenIddict só aceita HTTPS em `/connect/token`, o host da requisição de token aponta para a porta do perfil `https` (`https://localhost:7088`).
+
+## Technical plan (approved)
 
 ### DDL delta
 

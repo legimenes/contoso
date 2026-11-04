@@ -1,4 +1,4 @@
-using Adapters.Identity.AppClients;
+using Core.Abstractions.Identity;
 
 namespace Tests.Core.Abstractions.Identity;
 
